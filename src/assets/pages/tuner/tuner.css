@@ -1,0 +1,73 @@
+.tuner-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #1e1e1e00;
+    font-family: 'Arial', sans-serif;
+}
+.tuner-display {
+    font-size: 2vw;
+    background-color: #ffffff;
+    width: 70vw;
+    height: 30vw;
+    border-radius: 5vw;
+    position: relative;
+}
+.guitar-image {
+    position: absolute;
+    top: -17.75%;
+    left: 24.25%;
+    transform: rotate(90deg);
+    width: 20vw;
+    height: auto;
+}
+.tune-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 4vw;
+    height: 4vw;
+    background-color: #2b2727;
+}
+
+.tune-button.active {
+    background-color: #7cf3b7;
+    color: white;
+    font-weight: bold;
+}
+
+.tune-button-0 {
+    top: 2%;
+    left: 41%;
+}
+.tune-button-1 {
+    top: 2%;
+    left: 49%;
+}
+.tune-button-2 {
+    top: 2%;
+    left: 57%;
+}
+.tune-button-3 {
+    top: 85%;
+    left: 57%;
+}
+.tune-button-4 {
+    top: 85%;
+    left: 49%;
+}
+.tune-button-5 {
+    top: 85%;
+    left: 41%;
+}
+
+.tuner-svg {
+    position: absolute;
+    top: 0;
+    left: 67.5%;
+    width: 20vw;
+    height: auto;
+    pointer-events: none;
+}

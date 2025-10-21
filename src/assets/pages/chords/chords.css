@@ -1,0 +1,55 @@
+.chords-container {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  box-sizing: border-box;
+  padding: 4.5vw;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.chord {
+    width: 15vw;
+    height: 21vw;
+    margin: 1vw;
+    padding: 0.5vw;
+    background-color: white;
+    border-radius: 1vw;
+}
+
+.chord-name {
+    font-size: 2vw;
+    font-weight: bold;
+    margin-top: 0.5vw;
+    margin-bottom: -0.5vw;
+    padding: 0;
+    text-align: center;
+    color: black;
+    user-select: none;
+    -webkit-user-select: none; /* לכרום וספארי */
+    -moz-user-select: none;    /* לפיירפוקס */
+    -ms-user-select: none;     /* לאקספלורר */
+}
+
+.chord-diagram {
+    width: 100%;
+    height: calc(100% - 3vw);
+    background-color: #f0f0f000;
+    border-color: black;
+    border-width: 0.2vw;
+    border-style: solid;
+    border-radius: 1vw;
+    box-sizing: border-box;
+}
+
+.chord-svg {
+  width: 100%;   /* תופס את כל הרוחב של ההורה */
+  height: auto;  /* שומר על הפרופורציות */
+  display: block; /* מסיר רווח מתחת ל-svg */
+}
+
+.chord-svg text {
+    user-select: none;
+    -webkit-user-select: none; /* לכרום וספארי */
+    -moz-user-select: none;    /* לפיירפוקס */
+    -ms-user-select: none;     /* לאקספלורר */
+}
