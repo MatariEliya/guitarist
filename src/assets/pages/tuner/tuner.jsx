@@ -1,5 +1,5 @@
 import MicAccess from './micAccess';
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import './tuner.css';
 import guitar from './guitar head.png';
 
@@ -7,7 +7,7 @@ function Tuner() {
     const [childListening, setChildListening] = useState(false); // מצב המאזין
     const [activeIndex, setActiveIndex] = useState(0); // כפתור פעיל
     const tune = [{note: 'E', frequency: 82.41}, {note: 'A', frequency: 110.00}, {note: 'D', frequency: 146.83}, {note: 'G', frequency: 196.00}, {note: 'B', frequency: 246.94}, {note: 'E', frequency: 329.63}];
-    const [notePlaying, setNotePlaying] = useState(246.94);
+    const [notePlaying, setNotePlaying] = useState(83.43);
     const [notes, setNotes] = useState([]);
     useEffect(() => {
         if (!childListening) return;
@@ -17,11 +17,12 @@ function Tuner() {
         }, 500);
 
         return () => clearInterval(interval);
-    }, [childListening]);
+    }, [childListening, notePlaying, activeIndex]);
+
 
     const handleData = (value) => {
         setNotePlaying(value);
-        console.log('Detected pitch:', value);
+        console.log(value);
     };
 
     const handleButtonClick = (index) => {
@@ -30,11 +31,12 @@ function Tuner() {
     // מערך של תווים אחרונים
     const update = () => {
         console.log('notePlaying:', notePlaying);
-        if (!notePlaying) return;
-
+        if (notePlaying === null) return;
+        console.log('activeIndex:', activeIndex);
         const cents = getTuningAccuracy(notePlaying, tune[activeIndex].frequency);
         console.log('cents:', cents);
         setNotes(prev => [cents, ...prev.slice(0, 50)]); // שמור עד 50 אחרונים
+        
     };
 
     function getTuningAccuracy(actualFreq, targetFreq) {
@@ -65,16 +67,36 @@ function Tuner() {
 
                 ))}
                 <svg className="tuner-svg" viewBox="0 0 100 150">
-                    {notes.map((note, index) => (
-                        <rect
-                            key={index}
-                            x={index * 15 + 10}
-                            y={100 - note * 10}
-                            width={10}
-                            height={note * 10}
-                            fill="green"
-                        />
-                    ))}
+                    {notes.map((note, index) => {
+                        if (note === null) {
+                            console.log("undefined note");
+                            return null;
+                        }
+                        console.log("drawing note:", note);
+                        if (note > -50 && note < 50) {
+                            return (
+                                <rect
+                                    key={index}
+                                    x={index * 4 + 15}
+                                    y={73 - (note * 1.5)}
+                                    width={5}
+                                    height={4}
+                                    fill="green"
+                                />
+                            );
+                        } else if (note <= -50) {
+                            return (
+                                <rect
+                                    key={index}
+                                    x ={index * 4 + 15}
+                                    y={146}
+                                    width={5}
+                                    height={4}
+                                    fill="red"
+                                />
+                            );
+                        }
+                    })}
                 </svg>
             </div>
         </div>

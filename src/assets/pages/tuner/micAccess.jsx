@@ -20,17 +20,23 @@ function MicAccess({ onData, onListeningChange }) {
       sourceRef.current = source;
 
       const detectPitch = AMDF();
-      const processor = audioContext.createScriptProcessor(4096, 1, 1);
+      const processor = audioContext.createScriptProcessor(1024, 1, 1);
       processorRef.current = processor;
 
       processor.onaudioprocess = (event) => {
         const input = event.inputBuffer.getChannelData(0);
+
         const pitch = detectPitch(input);
         if (pitch && onData) onData(pitch);
+        if (pitch && onData) console.log(pitch);
       };
 
+      const silentGain = audioContext.createGain();
+      silentGain.gain.value = 0;
+
       source.connect(processor);
-      processor.connect(audioContext.destination);
+      processor.connect(silentGain);
+      silentGain.connect(audioContext.destination); 
 
       setListening(true);
       if (onListeningChange) onListeningChange(true);

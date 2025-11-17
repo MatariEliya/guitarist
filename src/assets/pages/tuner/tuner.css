@@ -21,6 +21,9 @@
     transform: rotate(90deg);
     width: 20vw;
     height: auto;
+    user-select: none;       /* מונע סימון */
+    -webkit-user-drag: none; /* מונע גרירה ל־desktop */
+    pointer-events: none;    /* מונע קליקים, אופציונלי */
 }
 .tune-button {
     display: flex;

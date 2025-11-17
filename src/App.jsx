@@ -9,7 +9,7 @@ import About from './assets/pages/about';
 import Chords from './assets/pages/chords/chords';
 import Tuner from './assets/pages/tuner/tuner';
 import MainMenu from './components/MainMenu/mainManu';
-
+import Background from './assets/background'; './assets/background'
 function App() {
   const pages = [
     { value: '/', label: 'Home' },
@@ -19,22 +19,25 @@ function App() {
   ];
   console.log(pages);
   return (
-    <Router>
-      <div className="container">
-        <MainMenu className="mainMenu" options={pages}/>
-        <div className='pageContent'>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/chords" element={<Chords />} />
-            <Route path="/tuner" element={<Tuner />} />
-          </Routes>
-        </div>
-        
+    <>
+      <Background />
+      <Router>
+        <div className="container">
+          <MainMenu className="mainMenu" options={pages}/>
+          <div className='pageContent'>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/chords" element={<Chords />} />
+              <Route path="/tuner" element={<Tuner />} />
+            </Routes>
+          </div>
+          
 
-        <Footer/>
-      </div>
-    </Router>
+          <Footer/>
+        </div>
+      </Router>
+    </>
   );
 }
 
