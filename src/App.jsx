@@ -8,8 +8,8 @@ import Home from './assets/pages/home';
 import About from './assets/pages/about';
 import Chords from './assets/pages/chords/chords';
 import Tuner from './assets/pages/tuner/tuner';
-import MainMenu from './components/MainMenu/mainManu';
-import Background from './assets/background'; './assets/background'
+import MainMenu from './components/mainMenu';
+import Background from './assets/backeground/background'; './assets/background'
 function App() {
   const pages = [
     { value: '/', label: 'Home' },

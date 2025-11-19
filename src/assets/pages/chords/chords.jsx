@@ -1,13 +1,13 @@
-import React, {} from "react";
+import React, {useState} from "react";
 import './chords.css';
 import Carousel from "../../../components/Carousel/Carousel";
-
+import Menu from "../../../components/Menu/menu";
 function Chords() {
 
     let chords = [
        { name: "C", numCapo: 1 , fingers:[[1, 5, 0], [2, 3, 0], [3, 2, 0], [0, 0, 0]] , mute:[1]},
         { name: "C", numCapo: 3 , fingers:[[1, 2, 4], [3, 3, 0], [3, 4, 0], [3, 5, 0]] , mute:[1]},
-        { name: "C", numCapo: 5 , fingers:[[1, 2, 4], [3, 3, 0], [3, 4, 0], [3, 5, 0]] , mute:[1]},
+        { name: "C", numCapo: 1 , fingers:[[1, 5, 0], [2, 3, 0], [3, 2, 0], [3, 6, 0]] , mute:[1]},
         { name: "G", numCapo: 1, fingers:[[2, 2, 0], [3, 1, 0], [3, 6, 0], [0, 0, 0]] , mute:[]},
         { name: "D", numCapo: 1, fingers:[[2, 4, 0], [2, 6, 0], [3, 5, 0], [0, 0, 0]] , mute:[1, 2]},
         { name: "Em", numCapo: 1, fingers:[[0, 0, 0], [2, 2, 0], [2, 3, 0], [0, 0, 0]] , mute:[]},
@@ -55,23 +55,36 @@ function Chords() {
         console.log(Array.from(existingNames.values()));
         return Array.from(existingNames.values());
     }
+    const [selectedOption, setSelectedOption] = useState(0);
+    function handleChange(path) {
+        setSelectedOption(path);
+    }
+
+    const options = [{label: 'All', value: 0}, 
+        {label: 'basic', value: 1}, 
+        {label: 'advanced', value: 2}
+        
+    ];
+    
 
     
     return (
-        <div className="chords-container">
-            {chords.map((chord) =>
-                chord.length > 1 ? (
-                    <Carousel className="carousel" style={{ width: '15vw', height: '22vw' }}>
-                        {chord.map((variant, index) => (
-                            <ChordDiagram key={variant.name + index} chord={variant} />
-                        ))}
-                    </Carousel>
-                ) : (
-                    <ChordDiagram chord={chord[0]} />
-                )
-            )}
+        <div className="chords-page">
+            <Menu className="chord-menu" location={selectedOption} onChange={handleChange} options={options} />
+            <div className="chords-container">
+                {chords.map((chord) =>
+                    chord.length > 1 ? (
+                        <Carousel className="carousel" style={{ width: '15vw', height: '22vw' }}>
+                            {chord.map((variant, index) => (
+                                <ChordDiagram key={variant.name + index} chord={variant} />
+                            ))}
+                        </Carousel>
+                    ) : (
+                        <ChordDiagram chord={chord[0]} />
+                    )
+                )}
+            </div>
         </div>
-        
     );
 
 };

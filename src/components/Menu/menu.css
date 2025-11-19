@@ -1,17 +1,11 @@
 .radio-inputs {
   display: flex;
-  flex-wrap: wrap;
   border-radius: 0.5vw;
   background-color: #EEE;
   box-sizing: border-box;
   box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
   padding: 0.25vw;
   font-size: 1vw;
-  position: fixed; /* נשאר במקום גם כשגוללים */
-  top: 0;          /* תמיד למעלה */
-  left: 50%;       /* מתחיל משמאל */
-  transform: translateX(-50%); /* מרכז את התפריט */
-  z-index: 1000;   /* מעל תוכן אחר */
   width: calc(7vw * var(--num-options));
   max-width: 100%;
   height: 3.5vw;

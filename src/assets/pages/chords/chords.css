@@ -1,9 +1,16 @@
+.chords-page {
+    margin-top: 2vw; /* מוסיף רווח למעלה כדי לאפשר לתפריט להיות גלוי */
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3vw;
+    overflow: auto;
+}
 .chords-container {
   width: 100%;
   display: flex;
   justify-content: left;
   box-sizing: border-box;
   padding: 4.5vw;
+  padding-top: 2vw;
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -53,4 +60,10 @@
     -webkit-user-select: none; /* לכרום וספארי */
     -moz-user-select: none;    /* לפיירפוקס */
     -ms-user-select: none;     /* לאקספלורר */
+}
+
+.chord-menu {
+  margin-top: 3vw;
+  margin-left: 5.5vw;
+  border: #a50e0e00;
 }
