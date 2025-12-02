@@ -6,6 +6,16 @@
     background-color: #1e1e1e00;
     font-family: 'Arial', sans-serif;
 }
+
+.button{
+    cursor: pointer;
+    margin: 1vw;
+    padding: 1vw, 2vw;
+    background-color: white;
+    color: #000;
+    font-weight: 700;
+    font-size: 2vw;
+}
 .tuner-display {
     font-size: 2vw;
     background-color: #ffffff;
