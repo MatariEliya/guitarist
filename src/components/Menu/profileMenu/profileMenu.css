@@ -1,0 +1,51 @@
+.menu {
+    position: fixed;
+    top: 0;
+    left: -10vw;
+    width: 15vw;
+    height: 100vh;
+    background-color: #EEE;
+    border-radius: 2vw;
+    z-index: 10;
+}
+.menu:hover .iconContainer{
+    transition: all 0.5s ease;
+    left: -4vw;
+}
+.menu:hover {
+    transition: all 0.5s ease;
+    left: -2vw;
+}
+
+.profileIcon {
+    width: 2vw;
+    height: 2vw;
+    position: absolute;
+    top: 1vw;
+    left: 13vw;
+    z-index: 12;
+    cursor: pointer;
+}
+.menu:hover .profileIcon{
+    transition: all 0.5s ease;
+    left: 9vw;
+}
+
+
+.iconContainer {
+    background-color: white;
+    position: fixed;
+    top: 0vw;
+    left: -12vw;
+    border-radius: 2vw;
+    width: 17vw;
+    height: 4vw;
+    z-index: 11;
+    cursor: pointer;
+    
+}
+.iconContainer:hover {
+    transition: all 0.5s ease;
+    left: -4vw;
+    transform: scale(1);
+}

@@ -1,4 +1,3 @@
-import MicAccess from './micAccess';
 import { useState, useEffect, useRef} from 'react';
 import './tuner.css';
 import guitar from './guitar head.png';
@@ -20,6 +19,8 @@ function Tuner() {
 
     const [source, setSource] = useState(null);
     const [started, setStart] = useState(false);
+    const streamRef = useRef(null);
+
 
     const [pitchScale, setPitchScale] = useState("4");
     const [pitch, setPitch] = useState("0");
@@ -66,6 +67,7 @@ function Tuner() {
 
     const start = async () => {
         const input = await getMicInput();
+        streamRef.current = input;
 
         if (audioCtx.state === "suspended") {
             await audioCtx.resume();
@@ -75,9 +77,22 @@ function Tuner() {
     };
 
     const stop = () => {
-        source.disconnect(analyserNode);
+        notes.length = 0;
+        if (source) {
+            source.disconnect();
+        }
+
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach(track => track.stop());
+        }
+
         setStart(false);
     };
+    useEffect(() => {
+        return () => {
+            stop(); //סוגר את הtuner כשהעמוד מתחלף
+        };
+    }, []);
 
     const getMicInput = () => {
         return navigator.mediaDevices.getUserMedia({

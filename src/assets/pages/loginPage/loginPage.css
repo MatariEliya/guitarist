@@ -1,0 +1,104 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* צמוד לחלק העליון */
+}
+
+.contentContainer{
+    position: relative;
+    margin-top: 5vw; /* רווח מלמעלה */
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 2vw;
+    width: 40vw;
+    min-height: 5vw;
+}
+
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.inputContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 20vw;
+}
+
+.returnButton{
+    background-color: rgba(127, 255, 212, 0);
+    all: unset;
+    position: absolute;
+    top: 1vw;
+    left: 1vw;
+}
+.returnButton:hover{
+    all: unset;
+    cursor: pointer;
+    position: absolute;
+    top: 1vw;
+    left: 1vw;
+}
+.returnSvg{
+    height: 2vw;
+    width: 4vw;
+}
+
+.formTitle{
+    font-family: 'Heebo', sans-serif;
+    font-weight: 800;
+    font-size: 2vw;
+    margin-top: 2vw;
+    margin-bottom: 0;
+    color: black;
+}
+.formSubtitle{
+    font-weight: 400;
+    font-size: 1vw;
+    margin-top: 0.5vw;
+    margin-bottom: 2vw;
+    color: rgb(99, 98, 98);
+}
+.forgetLink, .signupLink{
+    font-size: 0.8vw;
+    margin-top: -0.5vw;
+    margin-bottom: 1vw;
+    color: rgba(138, 138, 138, 1);
+}
+
+.inputTitle{
+    font-size: 0.9vw;
+    margin: 0;
+    margin-bottom: 0.2vw;
+    color: rgb(82, 82, 82);
+}
+.input{
+    margin-top: 0vw;
+    margin-bottom: 1vw;
+    height: 2.5vw;
+    width: 20vw;
+    border-radius: 0.5vw;
+    font-size: 0.75vw;
+}
+
+.submitButton{
+    margin-top: 1vw;
+    margin-bottom: 2vw;
+    height: 2.5vw;
+    width: 20vw;
+    border-radius: 0.5vw;
+    font-size: 1vw;
+    background-color: rgb(33, 150, 243);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.signupLink{
+    cursor: pointer;
+    color: rgb(82, 82, 82);
+}

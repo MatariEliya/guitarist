@@ -1,0 +1,52 @@
+.textFieldContainer {
+  position: relative;
+  display: flex;
+  margin-bottom: 1vw;
+}
+
+.input {
+  padding: 1vw;
+  padding-right: 2.5vw;
+  color: rgb(82, 82, 82);
+  background-color: white;
+  border: 0.075vw solid lightgrey;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0 0 2vw -0.6vw black;
+  margin: 0;
+
+}
+
+.input:hover {
+  border: 0.1vw solid lightgrey;
+  box-shadow: 0 0 2vw -0.6vw black;
+}
+
+.input:active {
+  transform: scale(0.95);
+}
+
+.input:focus {
+  border: 0.15vw solid rgb(201, 201, 201);
+}
+
+.passwordToggle{
+    all:unset;
+    display: flex;
+
+    position: absolute;
+    right: 1vw;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.passwordToggle:hover{
+    all:unset;
+    display: flex;
+    position: absolute;
+    right: 1vw;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

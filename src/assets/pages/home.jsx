@@ -3,6 +3,7 @@ import Header from '../../components/header';
 import LessonMenu from '../../components/lessonMenu/lessonMenu';
 
 const Home = () => {
+  console.log("Rendering LoginPage");
   return (
     <>
         <Header />

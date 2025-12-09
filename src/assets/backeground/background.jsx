@@ -2,13 +2,14 @@ import React from 'react';
 import './background.css';
 function Background() {
     return (
-        <body>
-            <div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
+        <div className="background">
+            <div className="wave"></div>
+            <div className="wave"></div>
+            <div className="wave"></div>
+            <div className="gitarNeck">
+                
             </div>
-        </body>
+        </div>
     );
 }
 

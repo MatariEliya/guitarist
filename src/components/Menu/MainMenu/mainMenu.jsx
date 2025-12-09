@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Menu from './Menu/menu';
+import Menu from '../menu';
 import './mainmenu.css';
 function MainMenu({options = []}) {
     const navigate = useNavigate();
