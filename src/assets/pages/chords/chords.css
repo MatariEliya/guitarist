@@ -67,3 +67,14 @@
   margin-left: 5.5vw;
   border: #a50e0e00;
 }
+
+.createChord {
+    color: rgb(0, 0, 0);
+    font-size: 8vw;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none; /* לכרום וספארי */
+    -moz-user-select: none;    /* לפיירפוקס */
+    -ms-user-select: none;     /* לאקספלורר */
+}

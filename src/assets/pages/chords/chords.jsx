@@ -1,9 +1,13 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../../globalsIndex";
 import './chords.css';
 import Carousel from "../../../components/Carousel/Carousel";
 import Menu from "../../../components/Menu/menu";
 function Chords() {
 
+    const {isAdmin} = useContext(GlobalContext);
+    const navigate = useNavigate();
     let chords = [
        { name: "C", numCapo: 1 , fingers:[[1, 5, 0], [2, 3, 0], [3, 2, 0], [0, 0, 0]] , mute:[1]},
         { name: "C", numCapo: 3 , fingers:[[1, 2, 4], [3, 3, 0], [3, 4, 0], [3, 5, 0]] , mute:[1]},
@@ -72,6 +76,9 @@ function Chords() {
         <div className="chords-page">
             <Menu className="chord-menu" location={selectedOption} onChange={handleChange} options={options} />
             <div className="chords-container">
+                {isAdmin && <button className="createChord" onClick={() => {
+                    navigate("/createChord");
+                }}>+</button>}
                 {chords.map((chord) =>
                     chord.length > 1 ? (
                         <Carousel className="carousel" style={{ width: '15vw', height: '22vw' }}>

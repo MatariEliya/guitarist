@@ -1,14 +1,19 @@
 import React from "react";
-import { useState } from "react";
+import { useState} from "react";
 import { Link, useNavigate} from "react-router-dom";
-
+import { GlobalContext } from "../../../globalsIndex";
+import { useContext } from "react";
 import './loginPage.css';
 import TextField from "../../../components/textField/textField";
 function LoginPage() {
     const [page, setPage] = useState("login");
+    
+    const {setIsConnected} = useContext(GlobalContext);
+    
+
     const navigate = useNavigate();
     return (
-        <div className="container">
+        <div key = {page} className="container"> {/*השתמששתי פה בkey page כדי לאפס את העמוד כל פעם שה page משתנה*/}
             <div className="contentContainer">
                 <button
                     className="returnButton"
@@ -34,7 +39,12 @@ function LoginPage() {
                             <TextField type={"password"} text="Enter password" className="input"></TextField>
                             <Link to="/about" className="forgetLink">forgot password?</Link>
                         </div>
-                        <button className="submitButton">Login</button>
+                        <button className="submitButton" onClick={
+                            () => {
+                                setIsConnected(true);
+                                navigate("/")
+                            }
+                        }>Login</button>
                         <a className="signupLink" onClick={() => setPage("register")}>Don't have an account? Register here</a>
                     </div>
                 ) : (
@@ -49,7 +59,12 @@ function LoginPage() {
                             <h5 className="inputTitle">Confirm Password</h5>
                             <TextField type={"password"} text="Confirm password" className="input"></TextField>
                         </div>
-                        <button className="submitButton">Login</button>
+                        <button className="submitButton" onClick={
+                            () => {
+                                setIsConnected(true);
+                                navigate("/")
+                            }
+                        }>Signup</button>
                         <a className="signupLink" onClick={() => setPage("login")}>Already have an account? Login here</a>
                     </div>
                 )}
@@ -58,5 +73,6 @@ function LoginPage() {
         </div>
     );
 }
+
 
 export default LoginPage;

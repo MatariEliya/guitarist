@@ -6,7 +6,7 @@ function Menu({ className = '' ,location, onChange, options = []}) {
     return (
         <div className={`radio-inputs ${className}`} style={{"--num-options": numOptions}}>
             {options.map((option) => (
-                <label className="radio">
+                <label className={`radio ${option.value.toString().split('/')[1]}`}>
                     <input
                         type="radio"
                         name={`radio-${className}`}
@@ -15,7 +15,7 @@ function Menu({ className = '' ,location, onChange, options = []}) {
                             onChange(option.value)
                         }}
                     />
-                    <span className="name">{option.label}</span>
+                    <span className={`name `}>{option.label}</span>
                 </label>
             ))}
         </div>

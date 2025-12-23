@@ -72,7 +72,7 @@ header {
   font-style: normal;
 }
 .container {
-  width: 100% - 5vw;
+  width: 100%;
   justify-content: center;
   text-align: center;
   box-sizing: border-box;

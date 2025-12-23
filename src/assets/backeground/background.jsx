@@ -6,9 +6,6 @@ function Background() {
             <div className="wave"></div>
             <div className="wave"></div>
             <div className="wave"></div>
-            <div className="gitarNeck">
-                
-            </div>
         </div>
     );
 }
