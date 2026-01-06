@@ -1,0 +1,55 @@
+/* From Uiverse.io by catraco */ 
+/*------ Settings ------*/
+.star-container {
+  --color: #f8d300;
+  --size: 2vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --position: relative;
+  cursor: pointer;
+  font-size: var(--size);
+  user-select: none;
+  fill: var(--color);
+}
+
+.star-container .star-regular {
+  position: absolute;
+  animation: keyframes-star .5s;
+}
+
+.star-container .star-solid {
+  position: absolute;
+  animation: keyframes-star .5s;
+  display: none;
+}
+
+/* ------ On check event ------ */
+.star-container input:checked ~ .star-regular {
+  display: none;
+}
+
+.star-container input:checked ~ .star-solid {
+  display: block;
+}
+
+/* ------ Hide the default checkbox ------ */
+.star-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* ------ Animations ------ */
+@keyframes keyframes-star {
+  0% {
+    transform: rotate(0deg) scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: rotate(10deg) scale(1.3);
+  }
+}

@@ -14,15 +14,35 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
-.chords-container > * {
+
+.chord-item {
+  position: relative;
+}
+.chord-item:hover .star-button-container {
+  display: block;
+}
+.chord-item > :not(.star-button-container) {
   margin: 1vw;
-  width: 15vw;
+  width: 16vw;
   height: 22vw;
   padding: 0.5vw;
   background-color: white;
   border-radius: 1vw;
+
+
 }
 
+.chord-item:hover > * {
+  border-color: rgba(234, 246, 59, 0.4); /* כחול */
+  box-shadow: 0 0 5vw rgba(234, 246, 59, 0.4); /* הילה כחולה */
+}
+
+.star-button-container{
+  position: absolute;
+  top: 2.2vw;
+  right: 2.5vw;
+  display: none;
+}
 
 .chord-name {
     font-size: 2vw;
@@ -62,13 +82,14 @@
     -ms-user-select: none;     /* לאקספלורר */
 }
 
-.chord-menu {
-  margin-top: 3vw;
-  margin-left: 5.5vw;
-  border: #a50e0e00;
-}
 
 .createChord {
+    margin: 1vw;
+    width: 16vw;
+    height: 22vw;
+    padding: 0.5vw;
+    background-color: white;
+    border-radius: 1vw;
     color: rgb(0, 0, 0);
     font-size: 8vw;
     align-items: center;
@@ -77,4 +98,21 @@
     -webkit-user-select: none; /* לכרום וספארי */
     -moz-user-select: none;    /* לפיירפוקס */
     -ms-user-select: none;     /* לאקספלורר */
+}
+
+
+.starButtonContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5vh;
+    font-size: 1.25vw;
+    color: #686348;
+    background-color: #fff2a8;
+    border-radius: 1vw;
+    width: 8vw;
+    height: 3.5vw;
+    padding: 0.5vw;
+    gap: 1.4vw;
+    
 }

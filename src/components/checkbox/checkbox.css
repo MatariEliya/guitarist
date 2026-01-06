@@ -1,0 +1,57 @@
+/* From Uiverse.io by SelfMadeSystem */ 
+/* Hide the default checkbox */
+.checkbox-container input   {
+  display: none;
+}
+
+.checkbox-container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 1.4vw;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 2vw;
+  width: 2vw;
+  background-color: #2196F300;
+  border-radius: 0.4vw;
+  transition: all 0.25s;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  transform: rotate(0deg);
+  border: 0.15vw solid black;
+  left: 0;
+  top: 0;
+  width: 1.6vw;
+  height: 1.6vw;
+  border-radius: 0.4vw;
+  transition: all 0.25s, border-width 0.1s;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  left: 0.7vw;
+  top: 0.4vw;
+  width: 0.4vw;
+  height: 0.8vw;
+  border-color: #fff0 white white #fff0;
+  border-width: 0 0.25vw 0.25vw 0;
+  border-radius: 0;
+  transform: rotate(45deg);
+}

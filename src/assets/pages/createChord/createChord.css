@@ -1,0 +1,86 @@
+.page-container {
+    padding: 3vw;
+    width: 80%;
+    height: 40vw;
+    margin: auto;
+    border-radius: 2vw;
+    color: black;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 1vw #00000050;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.chordContainer{
+    display: flex;
+    width: 30%;
+    flex-direction: column;
+    align-items: center;
+}
+.rowContent {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2vw;
+}
+.rowContent.left {
+    align-items: center;
+    justify-content: start;
+    margin: 0.25vw 0;
+}
+.cc-inputContainer {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2vw;
+    background-color: rgb(192, 192, 192);
+    border-radius: 4vw;
+}
+
+.chordNameInput {
+    width: 10vw;
+    height: 3vw;
+    font-size: 1vw;
+    margin-top: 2vw;
+    text-align: center;
+    padding: 0;
+    color: #303030;
+}
+.capoInput {
+    width: 7vw;
+    height: 3vw;
+    font-size: 1vw;
+    margin-top: 2vw;
+    text-align: center;
+    padding: 0;
+    color: #303030;
+}
+.capoInput::placeholder, .chordNameInput::placeholder {
+    color: #303030;
+    opacity: 1;
+}
+.fingerInput {
+    width: 5vw;
+    height: 2.5vw;
+    font-size: 1vw;
+    margin: 0;
+    text-align: center;
+    padding: 0;
+    color: #303030;
+}
+
+.cancel{
+    background-color: #ff4d4d;
+    font-size: 1vw;
+    width: 8vw;
+    height: 3vw;
+}
+.saveChordButton{
+    background-color: #4CAF50;
+    font-size: 1vw;
+    width: 8vw;
+    height: 3vw;
+}

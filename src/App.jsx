@@ -9,6 +9,7 @@ import About from './assets/pages/about';
 import Chords from './assets/pages/chords/chords';
 import Tuner from './assets/pages/tuner/tuner';
 import LoginPage from './assets/pages/loginPage/loginPage';
+import CreateChord from './assets/pages/createChord/createChord';
 
 import MainMenu from './components/Menu/MainMenu/mainMenu';
 import Background from './assets/backeground/background';
@@ -51,6 +52,7 @@ function AppShell() {
             <Route path="/chords" element={<Chords />} />
             <Route path="/tuner" element={<Tuner />} />
             <Route path="/loginSignup" element={<LoginPage />} />
+            <Route path="/createChord" element={<CreateChord />} />
           </Routes>
         </div>
         <Footer/>

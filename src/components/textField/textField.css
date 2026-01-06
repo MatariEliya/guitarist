@@ -1,7 +1,6 @@
 .textFieldContainer {
   position: relative;
   display: flex;
-  margin-bottom: 1vw;
 }
 
 .input {
@@ -13,7 +12,7 @@
   outline: none;
   transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
   box-shadow: 0 0 2vw -0.6vw black;
-  margin: 0;
+  margin-bottom: 1vw;
 
 }
 
@@ -36,7 +35,7 @@
 
     position: absolute;
     right: 1vw;
-    top: 50%;
+    top: 40%;
     transform: translateY(-50%);
     cursor: pointer;
 }

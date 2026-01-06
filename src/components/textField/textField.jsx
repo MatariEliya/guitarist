@@ -2,14 +2,38 @@ import React from "react";
 import { useState } from "react";
 import './textField.css';
 
-function TextField({type, text, icon, className}) {
+function TextField({type, text, icon, className, maxLength, onChange}) {
+    const [value, setValue] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    if (type != "password" || showPassword) {
-        type = "text";
-    }
+    const effectiveType = showPassword ? "text" : type == "number" ? "text" : type;
+
+
+    const handleChange = (e) => {
+        const newValue = e.target.value;
+        if (type === "number") {
+            if (newValue === '' || /^[0-9]+$/.test(newValue)){
+                setValue(newValue);
+                onChange(newValue);
+            }
+        } else {
+            setValue(newValue);
+            onChange(newValue);
+        }
+    };
+
+
+
     return(
         <div className="textFieldContainer">
-            <input placeholder={text} type={type} name="text" className={`input ${className}`}/>
+            <input 
+            value={value} 
+            placeholder={text} 
+            type={effectiveType} 
+            name="text" 
+            maxLength={maxLength}
+            className={`input ${className}`}
+            onChange={handleChange}
+            />
             {showPassword || type === "password" ?
                 <button 
                     className="passwordToggle"

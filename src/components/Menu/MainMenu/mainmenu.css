@@ -1,7 +1,7 @@
 .main-menu {
     width: calc(7vw * var(--num-options));
     position: fixed; /* נשאר במקום גם כשגוללים */
-    top: 0;          /* תמיד למעלה */
+    top: 1%;          /* תמיד למעלה */
     left: 50%;       /* מתחיל משמאל */
     transform: translateX(-50%); /* מרכז את התפריט */
     z-index: 1000;   /* מעל תוכן אחר */

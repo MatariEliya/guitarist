@@ -83,7 +83,7 @@ header {
 
 
 .pageContent {
-  padding-top: 3.5vw;
+  padding-top: 5vw;
   width: 100%;
 
 }
@@ -111,4 +111,3 @@ body {background:#232323; color:#fff}
 @media only screen and (min-width:36.250em) {
   .content {width:60%; padding-top:35% }
 }
-
