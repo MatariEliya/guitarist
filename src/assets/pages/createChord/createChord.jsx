@@ -6,13 +6,16 @@ import {ChordDiagram} from "../chords/chords"
 import TextField from "../../../components/textField/textField";
 import Checkbox from "../../../components/checkbox/checkbox";
 import Menu from "../../../components/Menu/menu";
+import {findMinFret} from "../chords/findMinFret";
 function CreateChord() {
     const navigate = useNavigate();
     const {isAdmin} = useContext(GlobalContext);
+
     const [chordInfo, setChordInfo] = useState({
         name: "chord name",
         numCapo: 1,
         fingers: [[0, 0, 0, false], [0, 0, 0, false], [0, 0, 0, false], [0, 0, 0, false]],
+        open: [1,2,3,4,5,6],
         mute: [],
         difficult: 0
     });
@@ -24,12 +27,17 @@ function CreateChord() {
             </div>
         );
     }
+    useEffect(() => {
+        setChordInfo(prev => ({
+            ...prev,
+            open: findMinFret(prev)
+        }));
+    }, [chordInfo.fingers, chordInfo.mute]);
 
     return (
         <div className="page-container">
             <div className="chordContainer">
-                <ChordDiagram chord={chordInfo}
-                />
+                <ChordDiagram chord={chordInfo} onToggleStar={null} />
                 <div className="rowContent" style={{marginTop: "1vw"}}>
                     <button className="saveChordButton"  onClick={() =>{
                         navigate(-1)

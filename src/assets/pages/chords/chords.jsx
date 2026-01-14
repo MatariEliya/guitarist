@@ -5,7 +5,7 @@ import './chords.css';
 import Carousel from "../../../components/Carousel/Carousel";
 import Menu from "../../../components/Menu/menu";
 import StarButton from "../../../components/starButton/starButton";
-import { Button } from "@mui/material";
+import { findMinFret } from "./findMinFret";
 function Chords() {
 
     const {isAdmin} = useContext(GlobalContext);
@@ -13,76 +13,78 @@ function Chords() {
 
     const[difficultLevel, setDifficultLevel] = useState(0);
     const [starredChords, setStarredChords] = useState(false);
-    
-    let rawchords = [
-       { name: "C", numCapo: 1 , fingers:[[1, 5, 0, true], [2, 3, 0, true], [3, 2, 0, true], [0, 0, 0, false]] , mute:[1], difficult: 0, starred: true},
-        { name: "C", numCapo: 3 , fingers:[[1, 2, 4, true], [3, 3, 0, true], [3, 4, 0, true], [3, 5, 0, true]] , mute:[1] , difficult: 0, starred: false},
-        { name: "C", numCapo: 1 , fingers:[[1, 5, 0, true], [2, 3, 0, true], [3, 2, 0, true], [3, 6, 0, true]] , mute:[1], difficult: 0, starred: false},
-        { name: "G", numCapo: 1, fingers:[[2, 2, 0, true], [3, 1, 0, true], [3, 6, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
-        { name: "D", numCapo: 1, fingers:[[2, 4, 0, true], [2, 6, 0, true], [3, 5, 0, true], [0, 0, 0, false]] , mute:[1, 2], difficult: 0, starred: false},
-        { name: "Em", numCapo: 1, fingers:[[0, 0, 0, false], [2, 2, 0, true], [2, 3, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
-        { name: "Am", numCapo: 1, fingers:[[1, 5, 0, true], [2, 3, 0, true], [2, 4, 0, true], [0, 0, 0, false]] , mute:[1], difficult: 0, starred: false},
-        { name: "F", numCapo: 1, fingers:[[1, 1, 5, true], [2, 4, 0, true], [3, 2, 0, true], [3, 3, 0, true]] , mute:[], difficult: 0, starred: false},
-        { name: "Bm", numCapo: 1, fingers:[[2, 2, 4, true], [3, 5, 0, true], [4, 3, 0 ,true], [4 ,4 ,0 ,true]] , mute:[1], difficult: 0, starred: false},
-        { name: "Gm", numCapo:3 , fingers:[[1 ,1 ,5 ,true] ,[0 ,0 ,0 ,false] ,[3 ,2 ,0 ,true] ,[3 ,3 ,0 ,true]] , mute:[], difficult: 0, starred: false},
+    const serverInfo = [
+        {name: "C", numCapo: 1 , fingers:[[1, 5, 0, true], [2, 3, 0, true], [3, 2, 0, true], [0, 0, 0, false]] , mute:[1], difficult: 0, starred: true},
+        {name: "C", numCapo: 3 , fingers:[[1, 2, 4, true], [3, 3, 0, true], [3, 4, 0, true], [3, 5, 0, true]] , mute:[1] , difficult: 0, starred: false},
+        {name: "C", numCapo: 1 , fingers:[[1, 5, 0, true], [2, 3, 0, true], [3, 2, 0, true], [3, 6, 0, true]] , mute:[1], difficult: 0, starred: false},
+        {name: "G", numCapo: 1, fingers:[[2, 2, 0, true], [3, 1, 0, true], [3, 6, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
+        {name: "D", numCapo: 1, fingers:[[2, 4, 0, true], [2, 6, 0, true], [3, 5, 0, true], [0, 0, 0, false]] , mute:[1, 2], difficult: 0, starred: false},
+        {name: "Em", numCapo: 1, fingers:[[0, 0, 0, false], [2, 2, 0, true], [2, 3, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
+        {name: "Am", numCapo: 1, fingers:[[1, 5, 0, true], [2, 3, 0, true], [2, 4, 0, true], [0, 0, 0, false]] , mute:[1], difficult: 0, starred: false},
+        {name: "F", numCapo: 1, fingers:[[1, 1, 5, true], [2, 4, 0, true], [3, 2, 0, true], [3, 3, 0, true]] , mute:[], difficult: 0, starred: false},
+        {name: "Bm", numCapo: 1, fingers:[[2, 2, 4, true], [3, 5, 0, true], [4, 3, 0 ,true], [4 ,4 ,0 ,true]] , mute:[1], difficult: 1, starred: false},
+        {name: "Gm", numCapo:3 , fingers:[[1 ,1 ,5 ,true] ,[0 ,0 ,0 ,false] ,[3 ,2 ,0 ,true] ,[3 ,3 ,0 ,true]] , mute:[], difficult: 1, starred: false},
     ];
-
-    // מוצא את המיתרים הפתוחים
-    function findMinFret(chord) {
-        let frets = [true, true, true, true, true, true];
-        for (let finger of chord.fingers) {
-            if (finger[0] !== 0) {
-                frets[finger[1] - 1] = false;
-                for (let i = 0; i < finger[2]; i++) {
-                    frets[finger[1] + i] = false;
-                }
+    const [rawchords, setRawChords] = useState(() => {
+        return serverInfo.map(chord => {
+            return {
+                ...chord,
+                open: findMinFret(chord)
             }
-        }
-        for (let mute of chord.mute) {
-            frets[mute - 1] = false;
-        }
-        return frets;
-    }
+        });
+    });
 
-    for (let chord of rawchords) {
-        chord.open = findMinFret(chord);
-    }
 
-    const [chords, setChords] = useState(sortChords(rawchords));
+
+
+
+    let chords = sortChords(rawchords);
 
     function sortChords(chords) {
         let sortedChords = structuredClone(chords);
         let existingNames = new Map();
 
-        for (let chord of sortedChords) {
-            let name = chord.name;
-            if (!existingNames.has(name)) {
-                existingNames.set(name, []);
+        for(let i =0; i < sortedChords.length; i++) {
+            if (!(starredChords && !sortedChords[i].starred) && (sortedChords[i].difficult <= difficultLevel)) {
+                let name = sortedChords[i].name;
+                if (!existingNames.has(name)) {
+                    existingNames.set(name, []);
+                }
+                sortedChords[i].firstPos = i;
+                existingNames.get(name).push(sortedChords[i]);
             }
-            existingNames.get(name).push(chord);
         }
-        console.log(Array.from(existingNames.values()));
         return Array.from(existingNames.values());
     }
-    const [selectedOption, setSelectedOption] = useState(0);
     function handleChange(path) {
-        setSelectedOption(path);
+        setDifficultLevel(Number(path));
     }
 
     const options = [{label: 'Basic', value: 0}, 
         {label: 'All', value: 1},         
     ];
+
+    function toggleStar(realIndex) {
+        setRawChords(prev =>
+            prev.map((chord, i) =>
+            i === realIndex
+                ? { ...chord, starred: !chord.starred }
+                : chord
+            )
+        );
+    }
+
     
 
     
     return (
         <div className="chords-page">
             <div className="rowContent left" style={{paddingLeft: "5.5vw", paddingTop: "3vh"}}>
-                <Menu className="chord-menu" location={selectedOption} onChange={handleChange} options={options} />
+                <Menu className="chord-menu" location={difficultLevel} onChange={handleChange} options={options} />
                 <button className="starButtonContainer" onClick={() => {
                     setStarredChords(!starredChords);
                 }}>
-                    <text>Favorite</text>
+                    <span>Favorite</span>
                     <StarButton starredChords={starredChords} disabled={true}/>
                 </button>
             </div>
@@ -91,18 +93,23 @@ function Chords() {
                     navigate("/createChord");
                 }}>+</button>}
                 
-                {chords.map((chord, index) =>
-                    <div key={index} className="chord-item">
+                {chords.map((chord, chordIndex) =>
+                    <div key={chordIndex} className="chord-item">
                         {chord.length > 1 ? (
-                            <Carousel className="carousel" style={{ width: '16vw', height: '22vw' }}>
-                                {chord.map((variant, index) => (
-                                    <ChordDiagram key={variant.name + index} chord={variant} />
+                            <Carousel className="carousel">
+                                {chord.map((variant, variantIndex) => (
+                                    <ChordDiagram key={variant.name + variantIndex} chord={variant} onToggleStar={() => toggleStar(variant.firstPos)} />
                                 ))}
-                                    
-
                             </Carousel>
                         ) : (
-                            <ChordDiagram chord={chord[0]}/>
+                            <div style={{position: "relative"}}>
+                                {starredChords === false || chord[0].starred === true ?(
+                                    <ChordDiagram chord={chord[0]} onToggleStar={() => {
+                                        toggleStar(chord[0].firstPos);
+                                    }}/>
+                                ) : null}
+                            </div>
+                            
                         )}
                         
                     </div>
@@ -113,31 +120,14 @@ function Chords() {
 
 };
 
+export function ChordDiagram({chord, onToggleStar}) {
 
-
-export function ChordDiagram({ chord }) {
-    let frets = [true, true, true, true, true, true];
-    for (let finger of chord.fingers) {
-        if (finger[0] !== 0 && finger[1] !== 0 && finger[3]) {
-            frets[finger[1] - 1] = false;
-            for (let i = 0; i < finger[2]; i++) {
-                frets[finger[1] + i] = false;
-            }
-        }
-        if (finger[1] + finger[2] > 6) {
-            finger[2] = 6 - finger[1];
-        }
-    }
-    for (let mute of chord.mute) {
-        frets[mute - 1] = false;
-    }
     const x = chord.numCapo > 9 ? 35 : 25;
-    console.log(chord.starred);
     return (
         <>
-            <div className="star-button-container">
-                <StarButton className="star-button" starredChords={chord.starred}/>
-            </div>
+            {onToggleStar !== null ?<div className="star-button-container">
+                <StarButton className="star-button" starredChords={chord.starred} changeValue={onToggleStar}/>
+            </div>: null}
             <div className="chord">
             <p className="chord-name">{chord.name}</p>
             <svg viewBox="0 0 270 335" className="chord-svg">
@@ -223,7 +213,7 @@ export function ChordDiagram({ chord }) {
                     </React.Fragment>
                     : null
                 ))}
-                {frets.map((isOpen, index) => (
+                {chord.open.map((isOpen, index) => (
                     isOpen ?
                     <React.Fragment key={index}>
                         <circle cx={43 * (index) + 28} cy="35" r="10" fill="#00000000" stroke="#000000ff" strokeWidth="5"/>

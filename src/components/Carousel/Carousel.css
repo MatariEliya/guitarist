@@ -38,35 +38,3 @@
     left: 0;
 }
 
-.carousel-dots {
-  display: flex;
-  justify-content: center;
-  gap: 0.5vw;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #aaa;
-  cursor: pointer;
-}
-
-.dot.active {
-  background: #000000;
-}
-
-.threedots {
-    padding-bottom: 1vw;
-    width: 1vw;
-    font-size: 1vw;
-    display: flex;
-    justify-content: center;
-    gap: 0.5vw;
-    color: #000000;
-}
-.carousel .carousel-dots .svg {
-    
-    width: 5%;
-    height: auto;
-}
