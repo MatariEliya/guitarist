@@ -101,17 +101,24 @@
 
 
 .starButtonContainer {
+    padding: 0.5vw;
+    padding-left: 1.8vw;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.5vh;
     font-size: 1.25vw;
     color: #686348;
     background-color: #fff2a8;
     border-radius: 1vw;
-    width: 8vw;
+    width: 3.5vw;
     height: 3.5vw;
-    padding: 0.5vw;
     gap: 1.4vw;
     
+}
+.searchInputChords{
+  height: 3.5vw !important;
+  width: 20vw !important;
+  margin: 0 !important;
+
+  font-size: 1vw !important;
 }

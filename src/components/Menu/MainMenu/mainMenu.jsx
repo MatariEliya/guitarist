@@ -9,9 +9,11 @@ function MainMenu({options = []}) {
     const handleChange = (path) => {
         navigate(path);
     };
+    const path = location.pathname.startsWith("/songs/")? "/songs": location.pathname;
+    console.log(path);
 
     return (
-        <Menu className="main-menu" location={location.pathname} onChange={handleChange} options={options} />
+        <Menu className="main-menu" location={path} onChange={handleChange} options={options} />
     );
 }
 

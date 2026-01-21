@@ -5,7 +5,7 @@ export function findMinFret(chord) {
     let frets = [true, true, true, true, true, true];
 
     for (let finger of chord.fingers) {
-        if (finger[0] !== 0) {
+        if (finger[3] && finger[0] > 0) {
             frets[finger[1] - 1] = false;
             for (let i = 0; i < finger[2]; i++) {
                 frets[finger[1] + i] = false;

@@ -1,0 +1,92 @@
+.creatChordContainer{
+    width: 90%;
+    height: auto;
+    border-radius: 3vw;
+    background-color: rgba(255, 255, 255, 0.774);
+}
+.songPageNavigationButton{
+  width: 8vw;
+  height: 3.5vw;
+  border-radius: 1vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.songNameInput{
+    margin-top: 0.2vw;
+    height: 3vw;
+    width: 20vw;
+    font-size: 1vw;
+}
+.artistNameInput{
+    margin-top: 0.2vw;
+    height: 2.5vw;
+    width: 16vw;
+    font-size: 0.8vw;
+}
+
+.songCardpreview{
+  pointer-events: none;
+  box-shadow: 0.5vw 0.5vw 1.5vw rgba(0,0,0,0.5);
+}
+
+.scroll-area {
+  overflow-y: auto;
+}
+
+/* רוחב פס הגלילה */
+.scroll-area::-webkit-scrollbar {
+  width: 0.8vw;
+}
+
+/* הרקע של המסילה */
+.scroll-area::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 0.8vw;
+}
+
+/* החלק שנגרר (ה"ידית") */
+.scroll-area::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 0.8vw;
+}
+
+/* כשעוברים עם העכבר */
+.scroll-area::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.chordSelect{
+    width: 10vw;
+    height: 14vw;
+    background-color: white;
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    padding-top: 0;
+}
+
+.text-button {
+  font-size: 1vw;
+  background: none;
+  border: none;
+  color: rgb(82, 82, 82);
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.text-button:hover{
+  transform: none;
+  transition: none;
+  box-shadow: none;
+}
+
+.lyricsTextInput{
+  width: 50vw;
+  height: 35vw;
+  font-size: 1vw;
+  font-weight: 500;
+  padding: 1vw;
+  border-radius: 2vw;
+}

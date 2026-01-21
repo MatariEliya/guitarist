@@ -27,12 +27,6 @@ function CreateChord() {
             </div>
         );
     }
-    useEffect(() => {
-        setChordInfo(prev => ({
-            ...prev,
-            open: findMinFret(prev)
-        }));
-    }, [chordInfo.fingers, chordInfo.mute]);
 
     return (
         <div className="page-container">
@@ -112,7 +106,7 @@ export default CreateChord;
                 <div className="rowContent left" >
                     <TextField type="number" text={"string"} maxLength={1} className="fingerInput" onChange={(value) =>{
                         if(value > 0 && value < 7){
-                            handleFingerChange(1, Number(value))
+                            handleFingerChange(1, 7 - Number(value))
                         }else{
                             handleFingerChange(1, 0)
                         }

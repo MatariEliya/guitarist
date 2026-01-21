@@ -7,13 +7,17 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Home from './assets/pages/home';
 import About from './assets/pages/about';
 import Chords from './assets/pages/chords/chords';
+import Songs from './assets/pages/songs/songs';
 import Tuner from './assets/pages/tuner/tuner';
 import LoginPage from './assets/pages/loginPage/loginPage';
 import CreateChord from './assets/pages/createChord/createChord';
+import CreateSong from './assets/pages/createSong/createSong';
 
 import MainMenu from './components/Menu/MainMenu/mainMenu';
 import Background from './assets/backeground/background';
 import ProfileMenu from './components/Menu/profileMenu/profileMenu';
+import Popup from './components/Popup/popup';
+import { profileSvg } from './assets/svg';
 
 import { GlobalProvider } from './globalsIndex';
 
@@ -21,24 +25,28 @@ import { GlobalProvider } from './globalsIndex';
 
 
 
+
 function AppShell() {
-  const location = useLocation(); // בודק איפה אנחנו נמצאים
+  const location = useLocation();
 
   
   const mainMenuPages = [
-    {value: '/loginSignup', label: svgIcon(), menu: false},
+    {value: '/loginSignup', label: profileSvg(), menu: false},
     { value: '/', label: 'Home', menu: true },
     { value: '/about', label: 'About', menu: true },
     { value: '/chords', label: 'Chords', menu: true },
+    { value: '/songs', label: 'Songs', menu: true },
     { value: '/tuner', label: 'Tuner', menu: true },
   ];
   const allPages = [
     ...mainMenuPages,
     { value: '/createChord', menu: false },
   ];
-  const isEmptyPage = !allPages.some(page => (page.value === location.pathname) && page.menu);
-  console.log("isEmptyPage:", isEmptyPage);
-
+  let isEmptyPage = !allPages.some(page => (page.value === location.pathname) && page.menu);
+  if(location.pathname.startsWith('/songs/')){
+    console.log("song");
+     isEmptyPage = false;
+  }
   return (
     <>
       <Background />
@@ -50,9 +58,12 @@ function AppShell() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/chords" element={<Chords />} />
+            <Route path="/songs" element={<Songs />} />
+            <Route path="/songs/:songID" element={<Songs />} />
             <Route path="/tuner" element={<Tuner />} />
             <Route path="/loginSignup" element={<LoginPage />} />
             <Route path="/createChord" element={<CreateChord />} />
+            <Route path="/createSong" element={<CreateSong/>} />
           </Routes>
         </div>
         <Footer/>
@@ -61,21 +72,11 @@ function AppShell() {
   );
 }
 
-function svgIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 22" width="2.25vw" height="3vw" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <clipPath id="clip0_104_2">
-        <rect width="30" height="20" fill="white"/>
-      </clipPath>
-      <circle cx="10" cy="6" r="5" stroke="black" strokeWidth="1" />
-      <circle cx="10" cy="19" r="8" stroke="black" strokeWidth="1" clipPath="url(#clip0_104_2)" />
-    </svg>
-  );
-}
 
 function App() {
   return(
     <GlobalProvider>
+      <Popup/>
       <Router>
         <AppShell/>
       </Router>

@@ -13,7 +13,6 @@
   transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
   box-shadow: 0 0 2vw -0.6vw black;
   margin-bottom: 1vw;
-
 }
 
 .input:hover {
@@ -38,6 +37,15 @@
     top: 40%;
     transform: translateY(-50%);
     cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.input:active ~ .passwordToggle{
+    transform: translateY(-50%) scale(0.95);
+;
+}
+.input:focus ~ .passwordToggle {
+  opacity: 1;
 }
 
 .passwordToggle:hover{
@@ -45,7 +53,16 @@
     display: flex;
     position: absolute;
     right: 1vw;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 40%;
+    transform: translateY(-50%) scale(1.05);
     cursor: pointer;
+}
+
+.passwordToggle {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.input:focus ~ .passwordToggle {
+  opacity: 1;
 }

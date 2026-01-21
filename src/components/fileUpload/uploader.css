@@ -1,0 +1,40 @@
+/* From Uiverse.io by Yaya12085 */ 
+.custum-file-upload {
+  height: 20vw;
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2vw;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: 0.2vw dashed #cacaca;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 2vw;
+}
+
+.custum-file-upload .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .icon svg {
+  height: 3vw;
+  fill: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .text span {
+  font-weight: 400;
+  color: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload input {
+  display: none;
+}

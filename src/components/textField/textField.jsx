@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import './textField.css';
+import { PasswordEyeSvg } from "../../assets/svg";
 
-function TextField({type, text, icon, className, maxLength, onChange}) {
-    const [value, setValue] = useState("");
+function TextField({type, text, value, Icon, className, maxLength, onChange, onEnter}) {
     const [showPassword, setShowPassword] = useState(false);
     const effectiveType = showPassword ? "text" : type == "number" ? "text" : type;
 
@@ -12,52 +12,43 @@ function TextField({type, text, icon, className, maxLength, onChange}) {
         const newValue = e.target.value;
         if (type === "number") {
             if (newValue === '' || /^[0-9]+$/.test(newValue)){
-                setValue(newValue);
                 onChange(newValue);
             }
         } else {
-            setValue(newValue);
             onChange(newValue);
         }
     };
+    const handelKey = (e) =>{
+        if(e.key === "Enter"){
+            onEnter(value);
+        }
+    }
 
 
 
     return(
         <div className="textFieldContainer">
             <input 
-            value={value} 
-            placeholder={text} 
-            type={effectiveType} 
-            name="text" 
-            maxLength={maxLength}
-            className={`input ${className}`}
-            onChange={handleChange}
+                value={value !== undefined ? value : ""}
+                placeholder={text}
+                type={effectiveType} 
+                name="text" 
+                maxLength={maxLength}
+                className={`input ${className}`}
+                onChange={handleChange}
+                onKeyDown={handelKey}
             />
             {showPassword || type === "password" ?
                 <button 
                     className="passwordToggle"
                     onClick={() => setShowPassword(!showPassword)}
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="gray"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                        <circle cx="12" cy="12" r="3" />
-                        {!showPassword && <line x1="3" y1="3" x2="21" y2="21"/>}
-                    </svg>
+                    <PasswordEyeSvg open={showPassword}/>
 
                 </button>
                 : null
             }
+            
         </div>
     );
 }

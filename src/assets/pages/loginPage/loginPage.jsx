@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState} from "react";
 import { Link, useNavigate} from "react-router-dom";
 import { GlobalContext } from "../../../globalsIndex";
@@ -9,6 +9,15 @@ function LoginPage() {
     const [page, setPage] = useState("login");
     
     const {setIsConnected} = useContext(GlobalContext);
+
+    const [usernameInput, setUsernameInput] = useState("")
+    const [passwordInput, setPasswordInput] = useState("")
+    const [secPasswordInput, setSecPasswordInput] = useState("")
+    useEffect(() => {
+        setUsernameInput("")
+        setPasswordInput("")
+        setSecPasswordInput("")
+    }, [page])
     
 
     const navigate = useNavigate();
@@ -34,9 +43,13 @@ function LoginPage() {
                         <h5 className="formSubtitle">Welcome back to Gitarist!</h5>
                         <div className="inputContainer">
                             <h5 className="inputTitle">Username</h5>
-                            <TextField text="Enter username" className="input"></TextField>
+                            <TextField text="Enter username" className="input" value={usernameInput} onChange={(value) =>{
+                                setUsernameInput(value)
+                            }}></TextField>
                             <h5 className="inputTitle">Password</h5>
-                            <TextField type={"password"} text="Enter password" className="input"></TextField>
+                            <TextField type={"password"} text="Enter password" className="input" value={passwordInput} onChange={(value) =>{
+                                setPasswordInput(value)
+                            }}></TextField>
                             <Link to="/about" className="forgetLink">forgot password?</Link>
                         </div>
                         <button className="submitButton" onClick={
@@ -53,11 +66,17 @@ function LoginPage() {
                         <h5 className="formSubtitle">Welcome! Let’s set up your Gitarist account</h5>
                         <div className="inputContainer">
                             <h5 className="inputTitle">Username</h5>
-                            <TextField text="Enter username" className="input"></TextField>
+                            <TextField text="Enter username" className="input" value={usernameInput} onChange={(value) =>{
+                                setUsernameInput(value)
+                            }}></TextField>
                             <h5 className="inputTitle">Password</h5>
-                            <TextField type={"password"} text="Enter password" className="input"></TextField>
+                            <TextField type={"password"} text="Enter password" className="input" value={passwordInput} onChange={(value) =>{
+                                setPasswordInput(value)
+                            }}></TextField>
                             <h5 className="inputTitle">Confirm Password</h5>
-                            <TextField type={"password"} text="Confirm password" className="input"></TextField>
+                            <TextField type={"password"} text="Confirm password" className="input" value={secPasswordInput} onChange={(value) =>{
+                                setSecPasswordInput(value)
+                            }}></TextField>
                         </div>
                         <button className="submitButton" onClick={
                             () => {
