@@ -1,16 +1,18 @@
 function Header() {
   return (
-    <header>
-      <h1
+    <header style={{margin: 0}}>
+      <span
         style={{
-          userSelect: 'none',          // מודרני
-          WebkitUserSelect: 'none',    // Safari
-          MozUserSelect: 'none',       // Firefox
-          msUserSelect: 'none'         // IE10+
+          fontSize: '10vw',
+          fontWeight: 'bold',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none'
         }}
       >
         guitarist
-      </h1>
+      </span>
     </header>
   );
 }

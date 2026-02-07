@@ -12,9 +12,13 @@
 }
 
 .radio-inputs .radio {
-  flex: 1  auto;
-  text-align: center;
-  height: 100%;
+  flex: 1;
+  display: flex;
+}
+.radio-inputs .radio > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .radio-inputs .radio input {

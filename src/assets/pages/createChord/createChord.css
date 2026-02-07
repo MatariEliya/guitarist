@@ -64,12 +64,14 @@
 .cancel{
     background-color: #ff4d4d;
     font-size: 1vw;
+    padding: 0.5vw;
     width: 8vw;
-    height: 3vw;
+    height: 3.5vw;
 }
 .saveChordButton{
     background-color: #4CAF50;
     font-size: 1vw;
+    padding: 0.5vw;
     width: 8vw;
-    height: 3vw;
+    height: 3.5vw;
 }

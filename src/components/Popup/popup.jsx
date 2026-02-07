@@ -16,9 +16,9 @@ function Popup () {
                 )}
 
                 {popupInfo.text && (
-                  <span style={{fontSize: "1vw", fontWeight: "400"}}>
+                  <p style={{fontSize: "1vw", fontWeight: "400", whiteSpace: "pre-line"}}>
                     {popupInfo.text}
-                  </span>
+                  </p>
                 )}
 
                 {popupInfo.object}

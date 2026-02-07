@@ -7,14 +7,14 @@
     font-family: 'Arial', sans-serif;
 }
 
-.button{
+.tunerStart{
+    color: white;
+    font-size: 1.5vw;
+    padding: 1vw 1vw;
+    border: none;
+    border-radius: 1vw;
     cursor: pointer;
-    margin: 1vw;
-    padding: 1vw, 2vw;
-    background-color: white;
-    color: #000;
-    font-weight: 700;
-    font-size: 2vw;
+    margin-bottom: 2vw;
 }
 .tuner-display {
     font-size: 2vw;
@@ -43,12 +43,14 @@
     width: 4vw;
     height: 4vw;
     background-color: #2b2727;
+    color: #ffffff;
+    font-size: 1.3vw;
+    font-weight: bold;
 }
 
 .tune-button.active {
+    font-size: 2vw;
     background-color: #7cf3b7;
-    color: white;
-    font-weight: bold;
 }
 
 .tune-button-0 {

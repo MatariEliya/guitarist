@@ -9,10 +9,11 @@ import TextField from "../../../components/textField/textField";
 import MultiLineTextField from "../../../components/MultiLineTextField/multiLineTextField";
 import Uploader from "../../../components/fileUpload/uploader";
 import { ChordDiagram } from "../chords/chords";
-import { ChordCard, SongLyrics } from "../songs/songs";
+import { SongCard} from "../songs/songs";
+import { SongLyrics } from "../songs/songPage/songPage";
 
 function CreateSong () {
-    const { openPopup } = usePopup();
+    const {openPopup} = usePopup();
 
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
@@ -67,7 +68,7 @@ function CreateSong () {
                     <Uploader onImageUpload={handleImageChange}/>
                     <button className="text-button" onClick={() => {
                         if(songName && artistName){
-                            openPopup({object: <ChordCard className={"songCardpreview"} songName={songName} artist={artistName} image={imagePreview} />})
+                            openPopup({object: <SongCard className={"songCardpreview"} songName={songName} artist={artistName} image={imagePreview} />})
                         }else{
                             openPopup({header: "Name Error", text: "You must give the song and the artist a name"})
                         }
@@ -114,7 +115,7 @@ function CreateSong () {
                 
                 /*page 2*/
                 : page == 2 ? <div className="columnLayout">
-                    <div className="rowContent left" style={{margin: "3vw 0", padding: "0 2.7vw"}}>
+                    <div className="chords-container" style={{width: "100%", margin: "3vw 0", padding: "0 2.7vw", gap: "1vw", marginLeft: "8vw"}}>
                         {usedChord.map((chord, idx) => {
                             return(
                                 <div className="chordSelect" style={{position: "relative"}}>

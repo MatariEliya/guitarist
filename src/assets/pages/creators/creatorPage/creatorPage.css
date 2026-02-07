@@ -1,0 +1,67 @@
+.topCreatoPage{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20vw;
+    background: linear-gradient(to bottom, rgb(100, 100, 100), rgba(255, 255, 255, 0));
+    border-top-left-radius: 2vw;
+    border-top-right-radius: 2vw;
+    z-index: -1;
+}
+.requestButton{
+    width: 15vw;
+    height: 4vw;
+    border-radius: 1vw;
+    font-size: 1.2vw;
+    font-weight: 600;
+    background-color: white;
+    color: #858585;
+}
+
+.creatorPageMenu{
+    position: absolute;
+    top: 1.5vw;
+    right: 2vw;
+    z-index: 10;
+    background-color: rgb(226, 226, 226) !important;
+}
+
+.creatorChord{
+    width: 15vw;
+    height: 22vw;
+    padding: 0.5vw;
+    background-color: white;
+    border-radius: 1vw;
+}
+.requestInput{
+    width: 40vw;
+    height: 20vw;
+    padding: 1vw;
+    border-radius: 0.5vw !important;
+    font-size: 1.2vw;
+    padding: 0.5vw;
+    box-sizing: border-box;
+    resize: none;
+}
+.sendRequestButton{
+    width: 15vw;
+    height: 4vw;
+    border-radius: 1vw;
+    font-size: 1.2vw;
+    font-weight: 700;
+    background-color: #ffffff;
+    color: rgb(85, 85, 85);
+    margin-top: 1vw;
+}
+.topRequest{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    width: 70%;
+    height: 85%;
+    background-color: #0075066e;
+    border-radius: 2vw;
+    z-index: 15;
+}

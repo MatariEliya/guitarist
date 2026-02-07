@@ -1,16 +1,17 @@
 .main-menu {
-    width: calc(7vw * var(--num-options));
     position: fixed; /* נשאר במקום גם כשגוללים */
     top: 1%;          /* תמיד למעלה */
     left: 50%;       /* מתחיל משמאל */
     transform: translateX(-50%); /* מרכז את התפריט */
-    z-index: 1000;   /* מעל תוכן אחר */
-      flex-wrap: wrap;
+    z-index: 20;   /* מעל תוכן אחר */
+    flex-wrap: wrap;
 
 }
 
-.radio.loginSignup {
-    max-width: 3vw;
+.radio.profile, .radio.loginSignup {
+    flex: 0 1 auto;
+    padding: 0 0.2vw;
     border-radius: 0.5vw;
     background-color: rgb(146, 146, 146);
+    cursor: pointer;
 }

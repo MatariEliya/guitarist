@@ -1,4 +1,3 @@
-// This function finds the minimum fret positions for a given chord
 
 
 export function findMinFret(chord) {

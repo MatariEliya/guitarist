@@ -1,11 +1,5 @@
-.container{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
 .contentSongs{
-    width: 80%;
+    width: 90%;
     min-height: 5vw;
     height: auto;
     margin-top: 2vw;
@@ -16,6 +10,8 @@
     justify-content: center;
     align-items: center; 
 }
+
+
 
 .searchBar{
     display: flex;
@@ -55,6 +51,7 @@
 
 .songsContainer{
     margin-top: 5vw;
+    margin-left: 1.2vw;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -91,14 +88,14 @@
 }
 .songImg{
     width: 100%;
-    height: 14vw;
-    object-fit: cover;      /* התמונה מכסה את הכפתור ומיחתכת במקום להתכווץ */
+    height: auto;
+    object-fit: cover;
 }
 .songInfo{
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 7vw;
+    height: 35%;
     background-color: white;
     border-radius: 1vw;
     box-shadow: 0 0vw 1.6vw rgba(0,0,0,1);
@@ -110,47 +107,13 @@
 }
 .songName{
     color: black;
-    font-size: 2vw;
     font-family: 'songsNamesFonts', sans-serif;
 }
-@font-face {
-  font-family: 'songsNamesFonts';
-  src: url("../../fonts/SparkyStonesRegular-BW6ld.ttf") format('opentype');
-  font-weight: normal; 
-  font-style: normal;
-}
+
 .artistName{
-    font-size: 0.8vw;
     font-weight: 600;
     color: black;
 }
-
-
-.songContainer{
-    position: relative;
-    width: 80%;
-    min-height: 5vw;
-    height: auto;
-    margin-top: 2vw;
-    border-radius: 3vw;
-    background-color: rgba(255, 255, 255, 0.774);
-}
-.songStarC:hover{
-    background-color: rgb(255, 230, 117);
-}
-.songNameHeader{
-    color: black;
-    font-family: 'songsNamesFonts', sans-serif;
-    font-size: 5vw;
-}
-.lyricsContainer{
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: 3vw;
-    margin-bottom: 2vw;
-    overflow: hidden; /* כאן זה מה שחוסם את החריגה */
-}
-
 
 .notF{
     margin: 2vw;

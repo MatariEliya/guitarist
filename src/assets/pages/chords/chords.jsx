@@ -9,7 +9,7 @@ import TextField from "../../../components/textField/textField";
 import { findMinFret } from "./findMinFret";
 function Chords() {
 
-    const {isAdmin} = useContext(GlobalContext);
+    const {userType} = useContext(GlobalContext);
     const navigate = useNavigate();
 
     const[difficultLevel, setDifficultLevel] = useState(0);
@@ -86,7 +86,7 @@ function Chords() {
                 }}></TextField>
             </div>
             <div className="chords-container" >
-                {isAdmin && <button className="createChord" onClick={() => {
+                {userType === "creator" && <button className="createChord" onClick={() => {
                     navigate("/createChord");
                 }}>+</button>}
                 
@@ -111,6 +111,10 @@ function Chords() {
                         
                     </div>
                 )}
+            </div>
+            <div className="rowContent" style={{margin: "1vw 0"}}>
+                <button style={{width: "7vw", height: "3.5vw", fontSize: "1.1vw", fontWeight: "600"}}>previus</button>
+                <button style={{width: "7vw", height: "3.5vw", fontSize: "1.1vw", fontWeight: "600"}}>next</button>
             </div>
         </div>
     );

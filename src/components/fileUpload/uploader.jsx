@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./uploader.css"
-import { UploaderSvg } from "../../assets/svg";
-import { compressImage } from "../../assets/pages/createSong/compressImage";
+import { UploaderSvg } from "../../assets/svg/svg";
+import { compressImage } from "./compressImage";
 
 
 function Uploader({onImageUpload}) {

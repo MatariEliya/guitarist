@@ -9,18 +9,21 @@ import Menu from "../../../components/Menu/menu";
 import {findMinFret} from "../chords/findMinFret";
 function CreateChord() {
     const navigate = useNavigate();
-    const {isAdmin} = useContext(GlobalContext);
+    const {userType} = useContext(GlobalContext);
 
     const [chordInfo, setChordInfo] = useState({
         name: "chord name",
-        numCapo: 1,
-        fingers: [[0, 0, 0, false], [0, 0, 0, false], [0, 0, 0, false], [0, 0, 0, false]],
+        numCapo: "",
+        fingers: [["", "", "", false], ["", "", "", false], ["", "", "", false], ["", "", "", false]],
         open: [1,2,3,4,5,6],
         mute: [],
         difficult: 0
     });
+    useEffect(() => {
+        console.log(chordInfo)
+    }, [chordInfo])
 
-    if (!isAdmin) {
+    if (userType !== "creator") {
         return (
             <div className="page-container">
                 <h1>You do not have permission to access this page.</h1>
@@ -47,18 +50,17 @@ function CreateChord() {
             </div>
             <div className="cc-inputContainer">
                 <div className="rowContent">
-                    <TextField text="Chord name" maxLength={10} className="chordNameInput" onChange={(value) =>{
+                    <TextField text="Chord name" value={chordInfo.name == "chord name" ? null : chordInfo.name} maxLength={10} className="chordNameInput" onChange={(value) =>{
                         if(!value) setChordInfo({...chordInfo, name: "chord name"})
                         else setChordInfo({...chordInfo, name: value})
                     }}></TextField>
-                    <TextField type="number" text="Fret num" maxLength={2} onChange={(value) =>{
-                        setChordInfo({...chordInfo, numCapo: Number(value)});
+                    <TextField type="number" value={chordInfo.numCapo} text="Fret num" maxLength={2} onChange={(value) =>{
+                        setChordInfo({...chordInfo, numCapo: (value === "" || value === null ? "" : Number(value))});
                     }} className="capoInput"></TextField>
                 </div>
-                <FingerPositions finger={1} chordInfo={chordInfo} setChordInfo={setChordInfo} />
-                <FingerPositions finger={2} chordInfo={chordInfo} setChordInfo={setChordInfo} />
-                <FingerPositions finger={3} chordInfo={chordInfo} setChordInfo={setChordInfo} />
-                <FingerPositions finger={4} chordInfo={chordInfo} setChordInfo={setChordInfo} />
+                {chordInfo.fingers.map((finger, index) =>
+                    <FingerPositions fingerNum={index + 1} fingerInfo={finger} chordInfo={chordInfo} setChordInfo={setChordInfo} />
+                )}
                 <div className="rowContent">
                     <text style={{color: "black", fontSize: "1.2vw", width: "7vw"}}>Mute strings:</text>
                     <div className="rowContent left" style={{gap: "1vw"}}>
@@ -83,8 +85,8 @@ function CreateChord() {
                 <div className="rowContent left" style={{gap: "0.5vw"}}>
                     <text style={{color: "black", fontSize: "1.2vw", width: "7vw"}}>Difficulty:</text>
                     <Menu style={{margin: "1vw 2vw"}} location={chordInfo.difficult} onChange={(value) =>{
-                    setChordInfo(prev => ({...prev, difficult: value}));
-                }} options={[{label: 'Basic', value: 0}, {label: 'difficult', value: 1}]} />
+                        setChordInfo(prev => ({...prev, difficult: value}));
+                    }} options={[{label: 'Basic', value: 0}, {label: 'difficult', value: 1}]} />
                 </div>
             </div>
         </div>
@@ -96,29 +98,29 @@ function CreateChord() {
 export default CreateChord;
 
 
-    function FingerPositions ({finger, setChordInfo}){
+    function FingerPositions ({fingerNum, fingerInfo, setChordInfo}){
         return(
             <div className="rowContent left" style={{paddingLeft: "1vw", gap: "1vw"}}>
-                <text style={{color: "black", fontSize: "1.2vw", width: "7vw"}}>Finger {finger}:</text>
+                <text style={{color: "black", fontSize: "1.2vw", width: "7vw"}}>Finger {fingerNum}:</text>
                 <Checkbox className="openStringsCheckbox" onChange={(e) => {
                     handleFingerChange(3, e.target.checked);
                 }}/>
                 <div className="rowContent left" >
-                    <TextField type="number" text={"string"} maxLength={1} className="fingerInput" onChange={(value) =>{
+                    <TextField type="number" text={"string"} value={fingerInfo[1]} maxLength={1} className="fingerInput" onChange={(value) =>{
                         if(value > 0 && value < 7){
-                            handleFingerChange(1, 7 - Number(value))
+                            handleFingerChange(1, value)
                         }else{
-                            handleFingerChange(1, 0)
+                            handleFingerChange(1, "")
                         }
                     }}></TextField>
-                    <TextField type="number" text={"fret"} maxLength={1} className="fingerInput" onChange={(value) => {
+                    <TextField type="number" text={"fret"} value={fingerInfo[0]} maxLength={1} className="fingerInput" onChange={(value) => {
                         if (value > 0 && value < 5) {
                             handleFingerChange(0, value);
                         }else{
-                            handleFingerChange(0, 0);
+                            handleFingerChange(0, "");
                         }
                         }}></TextField>
-                    <TextField type="number" text={"barre"} maxLength={1} className="fingerInput" onChange={(value) =>{
+                    <TextField type="number" text={"barre"} value={fingerInfo[2]} maxLength={1} className="fingerInput" onChange={(value) =>{
                         handleFingerChange(2, value);
                     }}></TextField>
                 </div>
@@ -129,8 +131,8 @@ export default CreateChord;
         function handleFingerChange(index, value) {
             setChordInfo(prev => {
                 const newFingers = [...prev.fingers];
-                newFingers[finger - 1] = [...newFingers[finger - 1]];
-                newFingers[finger - 1][index] = Number(value);
+                newFingers[fingerNum - 1] = [...newFingers[fingerNum - 1]];
+                newFingers[fingerNum - 1][index] = (value === "" || value === null ? "" : Number(value));
                 return{
                     ...prev,
                     fingers: newFingers

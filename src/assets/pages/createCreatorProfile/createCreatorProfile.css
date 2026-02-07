@@ -1,0 +1,21 @@
+.creatorCNInput{
+    margin: 0;
+    width: 20vw !important;
+    height: 3vw !important;
+    padding: 0.5vw;
+}
+.creatorTagInput{
+    margin-top: 2vw;
+    width: 7vw !important;
+    height: 3vw !important;
+    padding: 0.5vw;
+}
+.creatorBioInput{
+    margin-top: 2vw;
+    padding: 1vw;
+    width: 40vw !important;
+    height: 10vw !important;
+    border-radius: 0.5vw !important;
+    resize: none;
+    font-size: 1vw;
+}

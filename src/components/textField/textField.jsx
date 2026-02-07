@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import './textField.css';
-import { PasswordEyeSvg } from "../../assets/svg";
+import { PasswordEyeSvg } from "../../assets/svg/svg";
 
 function TextField({type, text, value, Icon, className, maxLength, onChange, onEnter}) {
     const [showPassword, setShowPassword] = useState(false);

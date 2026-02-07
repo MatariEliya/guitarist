@@ -124,13 +124,9 @@ function Tuner() {
 
     return (
         <div className ="tuner-page">
-            <h1>Tuner Page</h1>
-            <p>This is the Tuner page content.</p>
-            {!started ? (
-                <button className="button" onClick={start}>Start</button>
-            ) : (
-                <button className="button" onClick={stop}>Stop</button>
-            )}
+            <button className="tunerStart" style={{backgroundColor: started ? "#f44336" : "#4CAF50"}} onClick={started ? stop : start}>
+                {started ? 'Stop Tuning' : 'Start Tuning'}
+            </button>
             <div className="tuner-display">
                 <img src={guitar} alt="Guitar Head" className="guitar-image" />
                 {tune.map((note, index) => (

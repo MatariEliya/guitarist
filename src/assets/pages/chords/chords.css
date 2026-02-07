@@ -1,6 +1,6 @@
 .chords-page {
     margin-top: 2vw; /* מוסיף רווח למעלה כדי לאפשר לתפריט להיות גלוי */
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 3vw;
     overflow: auto;
 }
@@ -59,7 +59,7 @@
 
 .chord-diagram {
     width: 100%;
-    height: calc(100% - 3vw);
+    height: calc(70%);
     background-color: #f0f0f000;
     border-color: black;
     border-width: 0.2vw;
@@ -86,7 +86,7 @@
     margin: 1vw;
     width: 16vw;
     height: 22vw;
-    padding: 0.5vw;
+    padding: 0;
     background-color: white;
     border-radius: 1vw;
     color: rgb(0, 0, 0);
@@ -119,6 +119,7 @@
   height: 3.5vw !important;
   width: 20vw !important;
   margin: 0 !important;
+  border-radius: 1vw !important;
 
   font-size: 1vw !important;
 }
