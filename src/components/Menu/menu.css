@@ -14,6 +14,8 @@
 .radio-inputs .radio {
   flex: 1;
   display: flex;
+  align-items: center;      /* 🔥 מרכז אנכית */
+  justify-content: center;  /* 🔥 מרכז אופקית */
 }
 .radio-inputs .radio > * {
   display: flex;

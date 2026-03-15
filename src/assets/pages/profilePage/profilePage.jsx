@@ -1,7 +1,8 @@
 import "./profilePage.css";
 
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 
 import { GlobalContext } from "../../../globalsIndex";
@@ -16,28 +17,57 @@ function ProfilePage() {
   const {openPopup} = usePopup();
   const { userType , setUserType} = useContext(GlobalContext);
 
-  const profileCardInfo = {
-    creatorName: "Eliya matari",
-    image: "https://i1.sndcdn.com/artworks-yozHWjWpjaFSXbvH-JVqSbg-t500x500.jpg",
-    tags: ["chill", "pop", "Responds to requests"]
-  };
+  const [requests, setRequests] = useState(["Request 1", "Request 2 ugiu hgoihoiho ihp ppo[ po\njh\n \n dfdsd\n\n\n gfghs\nsadffsafasfasfsafsafsafsafsa asfasf sfasaf f sf asf\n s \nfa \ndflg ", "Request 3", "khgku"]); // Placeholder for user's requests
 
-  const requests = ["Request 1", "Request 2 ugiu hgoihoiho ihp ppo[ po\njh\n \n dfdsd\n\n\n gfghs\nsadffsafasfasfsafsafsafsafsa asfasf sfasaf f sf asf\n s \nfa \ndflg ", "Request 3", "khgku"]; // Placeholder for user's requests
-  console.log(requests);
-  console.log(requests.map(r => r.split("\n")));
-  const createdSongs = [{songID: "gtg8t67v", image:"https://upload.wikimedia.org/wikipedia/en/6/69/Elton_John_StillStanding.jpg", songName: "I'm still standing", artist: "Elton John", straredSong: true},
-    {songID: "uh7yiuhu", image:"https://i1.sndcdn.com/artworks-yozHWjWpjaFSXbvH-JVqSbg-t500x500.jpg", songName: "Beautiful things", artist: "Benson Boone", straredSong: false}]; // Placeholder for user's created songs
-  const staredSongs = [{songID: "gtg8t67v", image:"https://upload.wikimedia.org/wikipedia/en/6/69/Elton_John_StillStanding.jpg", songName: "I'm still standing", artist: "Elton John", straredSong: true},
-    {songID: "uh7yiuhu", image:"https://i1.sndcdn.com/artworks-yozHWjWpjaFSXbvH-JVqSbg-t500x500.jpg", songName: "Beautiful things", artist: "Benson Boone", straredSong: false}]; // Placeholder for user's stared songs
-  const createdChords = [{name: "G", numCapo: 1, fingers:[[2, 2, 0, true], [3, 1, 0, true], [3, 6, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
-        {name: "D", numCapo: 1, fingers:[[2, 4, 0, true], [2, 6, 0, true], [3, 5, 0, true], [0, 0, 0, false]] , mute:[1, 2], difficult: 0, starred: false},
-        {name: "Em", numCapo: 1, fingers:[[0, 0, 0, false], [2, 2, 0, true], [2, 3, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
-        {name: "Am", numCapo: 1, fingers:[[1, 5, 0, true], [2, 3, 0, true], [2, 4, 0, true], [0, 0, 0, false]] , mute:[1], difficult: 0, starred: false},
-        {name: "F", numCapo: 1, fingers:[[1, 1, 5, true], [2, 4, 0, true], [3, 2, 0, true], [3, 3, 0, true]] , mute:[], difficult: 0, starred: false},
-        {name: "Bm", numCapo: 1, fingers:[[2, 2, 4, true], [3, 5, 0, true], [4, 3, 0 ,true], [4 ,4 ,0 ,true]] , mute:[1], difficult: 1, starred: false}]; // Placeholder for user's created chords
-  const staredChords = [{name: "F", numCapo: 1, fingers:[[1, 1, 5, true], [2, 4, 0, true], [3, 2, 0, true], [3, 3, 0, true]] , mute:[], difficult: 0, starred: false},
-        {name: "Bm", numCapo: 1, fingers:[[2, 2, 4, true], [3, 5, 0, true], [4, 3, 0 ,true], [4 ,4 ,0 ,true]] , mute:[1], difficult: 1, starred: false}]; // Placeholder for user's stared chords
+    const [creatorInfo, setCreatorInfo] = useState({name: "EliyaMatari", bio: "This is the creator bio.\nHere you can write about yourself, your music style, experience, and anything else you'd like to share with your audience.", 
+        links: {youtube: "https://www.youtube.com/watch?v=yMZn60XJFVk", instagram: "https://www.instagram.com", tiktok: ""},
+        songs: [
+            {songID: "gtg8t67v", songName: "I'm still standing", artist: "Elton John", straredSong: true},
+            {songID: "uh7yiuhu", songName: "Beautiful things", artist: "Benson Boone", straredSong: false}
+        ], 
+        chords: [{name: "D", numCapo: 1, fingers:[[2, 4, 0, true], [2, 6, 0, true], [3, 5, 0, true], [0, 0, 0, false]] , mute:[1, 2], difficult: 0, starred: false},
+            {name: "Em", numCapo: 1, fingers:[[0, 0, 0, false], [2, 2, 0, true], [2, 3, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
+            {name: "Am", numCapo: 1, fingers:[[1, 5, 0, true], [2, 3, 0, true], [2, 4, 0, true], [0, 0, 0, false]] , mute:[1], difficult: 0, starred: false},
+            {name: "F", numCapo: 1, fingers:[[1, 1, 5, true], [2, 4, 0, true], [3, 2, 0, true], [3, 3, 0, true]] , mute:[], difficult: 0, starred: false},
+            {name: "Bm", numCapo: 1, fingers:[[2, 2, 4, true], [3, 5, 0, true], [4, 3, 0 ,true], [4 ,4 ,0 ,true]] , mute:[1], difficult: 1, starred: false}
+        ]
+    });
 
+
+  useEffect( () => {
+    const fetchData = async () => {
+      const token = sessionStorage.getItem("token");
+      const creator_id = jwtDecode(token)?.user_id
+
+      
+      //מוציאים את הנתונים של הפרופיל
+      try{
+        const requestResponse = await fetch("http://localhost:3001/creators/requests", {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            }
+        });
+        const requestsData = await requestResponse.json();
+        if(requestResponse.ok){
+            setRequests(requestsData);
+        }
+        const response = await fetch(`http://localhost:3001/creators/creatorInfo/${creator_id}`, {
+            method: "GET"           
+        });
+        const data = await response.json()
+        if(data){
+            setCreatorInfo({name: data.creatorname, bio: data.bio, links: {youtube: data.youtube, instagram: data.instagram, tiktok: data.tiktok}, songs: data.songs, chords: data.chords});
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  
   return (
     <div className="container">
       {userType === "guest" ? (
@@ -62,148 +92,102 @@ function ProfilePage() {
           >
             <ReturnSvg/>
           </button>
-          {/* Profile section - only for creators */}
           {userType === "creator" ? (
             <>
+              {/*profile section */}
               <span style={{fontSize: "2vw", fontWeight: "700", marginBottom: "1vw"}}>Create and edit your creator profile</span>
-              {profileCardInfo ? (
-                <ProfileCard info={profileCardInfo} onClick={() => navigate("/createCreatorProfile")}/>
+              {creatorInfo ? (
+                <ProfileCard info={{creatorName: creatorInfo.name, tag1: "chill", tag2: "pop", tag3: "Responds to requests"}} onClick={() => navigate("/createCreatorProfile")}/>
               ) : (
                 <button className="createProfileCard" onClick={() => navigate("/createCreatorProfile")}>+</button>
               )}
-            </>
-          ) : (
-            null
-          )}
-
-          {/* Requests section - only for creators */}
-          {userType === "creator" ? (
-            <div className="columnLayout" style={{position: "relative", width: "100%", borderRadius: "2vw", paddingTop: "2vw", marginTop: "2vw", backgroundColor: "#ffffff80"}}>
-              <button className="seeAllButton" style={{top: "5vw"}} onClick={() => navigate("/seeAll/requests")}>
-                <SeeAllSvg/>
-              </button>
-              <span style={{fontSize: "2vw", fontWeight: "700", marginBottom: "1vw"}}>Your requests</span>
-              {requests.length == 0 ? (
-                <span style={{fontSize: "1vw", fontWeight: "500", color: "#363636"}}>You have no requests at the moment.</span>
-              ) : (
-                <div className="rowContent" style={{minHeight: "10vw", position: "relative", gap: "2vw", padding: "3.25vw", borderRadius: "2vw"}}>
-                  {requests.map((request, index) => (
-                    <button key={index} className="requestCard" onClick={() => {
-                      openPopup({text: request})
-                    }}>
-                      <p style={{whiteSpace: "pre-line", display: "block", fontSize: "0.9vw", fontWeight: "500", margin: "0"}}>{request}</p>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : null}
-          
-
-          {/* Songs section */}
-          <div className="columnLayout" style={{width: "100%", borderRadius: "2vw", paddingTop: "2vw", marginTop: "2vw", backgroundColor: "#ffffff80"}}>
-            <span style={{fontSize: "3vw", fontWeight: "700", marginBottom: "1vw"}}>Your songs</span>
-          
-            {/* Created songs section - only for creators */}
-            {userType === "creator" ?
-              <>
-                {createdSongs.length == 0 ? (
-                  <span style={{fontSize: "1vw", fontWeight: "500", color: "#363636"}}>You have not created any songs yet.</span>
-                ) : createdSongs.length > 0 ? (
-                  <div style={{width: "100%", position: "relative"}}>
-                    <button className="seeAllButton" onClick={() => navigate("/seeAll/createdSongs")}>
-                      <SeeAllSvg/>
-                    </button>
-                    <span style={{fontSize: "2vw", fontWeight: "700", color: "#363636"}}>Created songs</span>
-                    <div className="rowContent left" style={{minHeight: "20vw", position: "relative", gap: "2vw", padding: "3vw", borderRadius: "2vw"}}>
-                      {createdSongs.map((song, index) => (
-                        <SongCard className={"profilePageSongCard"} key={index} image={song.image} songName={song.songName} artist={song.artist} fontSize={"1.6"} onClick={() => navigate(`/songs/${song.songID}`)}/>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
-                <div style={{width: "90%", height: "0.4vw", backgroundColor: "#ffffff", borderRadius: "0.4vw"}}/>
-              </>
-            : null}
-            {/* Stared songs section */}
-            {staredSongs.length == 0 ? (
-              <span style={{fontSize: "1vw", fontWeight: "500", color: "#363636"}}>You have not stared any songs yet.</span>
-            ) : staredSongs.length > 0 ? (
-              <div style={{width: "100%", position: "relative"}}>
-                <button className="seeAllButton" onClick={() => navigate("/seeAll/staredSongs")}>
+              {/*requests section */}
+              <div className="columnLayout" style={{position: "relative", width: "100%", borderRadius: "2vw", paddingTop: "2vw", marginTop: "2vw", backgroundColor: "#ffffff80"}}>
+                <button className="seeAllButton" style={{top: "5vw"}} onClick={() => navigate("/seeAll/requests")}>
                   <SeeAllSvg/>
                 </button>
-                <span style={{fontSize: "2vw", fontWeight: "700", color: "#363636"}}>Stared songs</span>
-                <div className="rowContent left" style={{position: "relative", gap: "2vw", padding: "3vw", borderRadius: "2vw"}}>
-                  {staredSongs.map((song, index) => (
-                    <SongCard className={"profilePageSongCard"} key={index} image={song.image} songName={song.songName} artist={song.artist} fontSize={"1.6"} onClick={() => navigate(`/songs/${song.songID}`)}/>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </div>
-
-          {/* Chords section */}
-          <div className="columnLayout" style={{width: "100%", borderRadius: "2vw", paddingTop: "2vw", marginTop: "2vw", backgroundColor: "#ffffff80"}}>
-            <span style={{fontSize: "3vw", fontWeight: "700", marginBottom: "1vw"}}>Your chords</span>
-            {/* Created chords section - only for creators */}
-            {userType === "creator" ?
-              <>
-                {createdChords.length == 0 ? (
-                  <span style={{fontSize: "1vw", fontWeight: "500", color: "#363636"}}>You have not created any chords yet.</span>
-                ) : createdChords.length > 0 ? (
-                  <div style={{width: "100%", position: "relative"}}>
-                    <button className="seeAllButton" onClick={() => {
-                      navigate("/seeAll/createdChords")
-                    }}>
-                      <SeeAllSvg/>
-                    </button>
-                    <span style={{fontSize: "2vw", fontWeight: "700", color: "#363636"}}>Created chords</span>
-                    <div className="rowContent left" style={{position: "relative", gap: "2vw", padding: "3vw", borderRadius: "2vw"}}>
-                      {createdChords.map((chord, index) => (
-                        <div style={{backgroundColor: "white", width: "12vw", height: "16.5vw", borderRadius: "1vw"}} key={index}>
-                          <ChordDiagram chord={chord} fontSize={"1.1vw"}/>
-                        </div>
-                      ))}
-                    </div>
+                <span style={{fontSize: "2vw", fontWeight: "700", marginBottom: "1vw"}}>Your requests</span>
+                {requests.length == 0 ? (
+                  <span style={{fontSize: "1vw", fontWeight: "500", color: "#363636"}}>You have no requests at the moment.</span>
+                ) : (
+                  <div className="rowContent" style={{minHeight: "10vw", position: "relative", gap: "2vw", padding: "3.25vw", borderRadius: "2vw"}}>
+                    {requests.map((request, index) => (
+                      index < 4 &&
+                      <button key={index} className="requestCard" onClick={() => {
+                        openPopup({text: request.request})
+                      }}>
+                        <p style={{whiteSpace: "pre-line", display: "block", fontSize: "0.9vw", fontWeight: "500", margin: "0"}}>{request.request}</p>
+                      </button>
+                    ))}
                   </div>
-                  
-                ) : null}
-                <div style={{width: "90%", height: "0.4vw", backgroundColor: "#ffffff", borderRadius: "0.4vw"}}/>
-              </>
-            : null}
-            {/* Stared chords section */}
-            {staredChords.length == 0 ? (
-              <span style={{fontSize: "1vw", fontWeight: "500", color: "#363636"}}>You have not stared any chords yet.</span>
-            ) : staredChords.length > 0 ? (
-              <div style={{width: "100%", position: "relative"}}>
-                <button className="seeAllButton" onClick={() => {
-                      navigate("/seeAll/staredChords")
-                    }}>
-                      <SeeAllSvg/>
-                    </button>
-                <span style={{fontSize: "2vw", fontWeight: "700", color: "#363636"}}>Stared chords</span>
-                <div className="rowContent left" style={{position: "relative", gap: "2vw", padding: "3vw", borderRadius: "2vw"}}>
-                  {staredChords.map((chord, index) => (
-                    <div key={index} style={{backgroundColor: "white", width: "12vw", height: "16.5vw", borderRadius: "1vw"}}>
-                      <ChordDiagram chord={chord} fontSize={"1.1vw"}/>
-                    </div>
-                  ))}
-                </div>
+                )}
               </div>
-            ) : null}
-          </div>
+              {/* Songs section */}
+              <div className="columnLayout" style={{width: "100%", borderRadius: "2vw", paddingTop: "2vw", marginTop: "2vw", backgroundColor: "#ffffff80"}}>
+                <span style={{fontSize: "3vw", fontWeight: "700", marginBottom: "1vw"}}>Your songs</span>
+
+                    {creatorInfo.songs.length === 0 ? (
+                      <span style={{fontSize: "1vw", fontWeight: "500", color: "#363636"}}>You have not created any songs yet.</span>
+                    ) : (
+                      <div style={{width: "100%", position: "relative"}}>
+                        <button className="seeAllButton" onClick={() => navigate("/seeAll/createdSongs")}>
+                          <SeeAllSvg/>
+                        </button>
+                        <span style={{fontSize: "2vw", fontWeight: "700", color: "#363636"}}>Created songs</span>
+                        <div className="rowContent left" style={{minHeight: "20vw", position: "relative", gap: "2vw", padding: "3vw", borderRadius: "2vw"}}>
+                          {creatorInfo.songs.map((song, index) => (
+                            index < 6 &&
+                            <SongCard className={"profilePageSongCard"} key={index} image={`http://localhost:3001/images/${song.songID}_song.webp`} songName={song.songName} artist={song.artist} fontSize={"1.6"} onClick={() => navigate(`/songs/${song.songID}`)}/>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <div style={{width: "90%", height: "0.4vw", backgroundColor: "#ffffff", borderRadius: "0.4vw"}}/>
+              </div>
+              {/* Chords section */}
+              <div className="columnLayout" style={{width: "100%", borderRadius: "2vw", paddingTop: "2vw", marginTop: "2vw", backgroundColor: "#ffffff80"}}>
+                <span style={{fontSize: "3vw", fontWeight: "700", marginBottom: "1vw"}}>Your chords</span>
+
+                    {creatorInfo.chords.length == 0 ? (
+                      <span style={{fontSize: "1vw", fontWeight: "500", color: "#363636"}}>You have not created any chords yet.</span>
+                    ) : creatorInfo.chords.length > 0 ? (
+                      <div style={{width: "100%", position: "relative"}}>
+                        <button className="seeAllButton" onClick={() => {
+                          navigate("/seeAll/createdChords")
+                        }}>
+                          <SeeAllSvg/>
+                        </button>
+                        <span style={{fontSize: "2vw", fontWeight: "700", color: "#363636"}}>Created chords</span>
+                        <div className="rowContent left" style={{position: "relative", gap: "2vw", padding: "3vw", borderRadius: "2vw"}}>
+                          {creatorInfo.chords.map((chord, index) => (
+                            index < 6 &&
+                            <div style={{backgroundColor: "white", width: "12vw", height: "16.5vw", borderRadius: "1vw"}} key={index}>
+                              <ChordDiagram chord={chord} fontSize={"1.1vw"}/>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                    ) : null}
+                    <div style={{width: "90%", height: "0.4vw", backgroundColor: "#ffffff", borderRadius: "0.4vw"}}/>
+              </div>
+            </>
+          ) : (
+            <span style={{fontSize: "2vw", fontWeight: "700"}}>Already leaving us?</span>
+          )}
 
 
-          {/* Logout and back home buttons */}
+
           <div className="rowContent" style={{marginTop: "2vw", marginBottom: "2vw", gap: "2vw"}}>
             <button style={{width: "8vw", height: "3.5vw", backgroundColor: "rgb(102, 64, 114)"}} onClick={() => navigate("/")}>Back Home</button>
             <button style={{width: "8vw", height: "3.5vw", backgroundColor: "#ff3737"}} onClick={() => {
               setUserType("guest");
+              localStorage.setItem("token", "")
               navigate("/")
             }}>Logout</button>
           </div>
-        </div>)}
+        </div>)
+      }
     </div>
   );
 }

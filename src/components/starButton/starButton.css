@@ -16,12 +16,14 @@
 .star-container .star-regular {
   position: absolute;
   animation: keyframes-star .5s;
+  pointer-events: auto;
 }
 
 .star-container .star-solid {
   position: absolute;
   animation: keyframes-star .5s;
   display: none;
+  pointer-events: auto;
 }
 
 /* ------ On check event ------ */

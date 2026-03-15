@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../../globalsIndex";
 import './chords.css';
@@ -6,28 +6,47 @@ import Carousel from "../../../components/Carousel/Carousel";
 import Menu from "../../../components/Menu/menu";
 import StarButton from "../../../components/starButton/starButton";
 import TextField from "../../../components/textField/textField";
-import { findMinFret } from "./findMinFret";
+import { findMinFret, openMute } from "./findMinFret";
 function Chords() {
 
     const {userType} = useContext(GlobalContext);
     const navigate = useNavigate();
 
-    const[difficultLevel, setDifficultLevel] = useState(0);
+    const [difficultLevel, setDifficultLevel] = useState(0);
     const [starredChords, setStarredChords] = useState(false);
     const [searchInput, setSearchInput] = useState("")
 
     const [rawchords, setRawChords] = useState([
-        {name: "C", numCapo: 1 , fingers:[[1, 5, 0, true], [2, 3, 0, true], [3, 2, 0, true], [0, 0, 0, false]] , mute:[1], difficult: 0, starred: true},
-        {name: "C", numCapo: 3 , fingers:[[1, 2, 4, true], [3, 3, 0, true], [3, 4, 0, true], [3, 5, 0, true]] , mute:[1] , difficult: 0, starred: false},
-        {name: "C", numCapo: 1 , fingers:[[1, 5, 0, true], [2, 3, 0, true], [3, 2, 0, true], [3, 6, 0, true]] , mute:[1], difficult: 0, starred: false},
-        {name: "G", numCapo: 1, fingers:[[2, 2, 0, true], [3, 1, 0, true], [3, 6, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
-        {name: "D", numCapo: 1, fingers:[[2, 4, 0, true], [2, 6, 0, true], [3, 5, 0, true], [0, 0, 0, false]] , mute:[1, 2], difficult: 0, starred: false},
-        {name: "Em", numCapo: 1, fingers:[[0, 0, 0, false], [2, 2, 0, true], [2, 3, 0, true], [0, 0, 0, false]] , mute:[], difficult: 0, starred: false},
-        {name: "Am", numCapo: 1, fingers:[[1, 5, 0, true], [2, 3, 0, true], [2, 4, 0, true], [0, 0, 0, false]] , mute:[1], difficult: 0, starred: false},
-        {name: "F", numCapo: 1, fingers:[[1, 1, 5, true], [2, 4, 0, true], [3, 2, 0, true], [3, 3, 0, true]] , mute:[], difficult: 0, starred: false},
-        {name: "Bm", numCapo: 1, fingers:[[2, 2, 4, true], [3, 5, 0, true], [4, 3, 0 ,true], [4 ,4 ,0 ,true]] , mute:[1], difficult: 1, starred: false},
-        {name: "Gm", numCapo:3 , fingers:[[1 ,1 ,5 ,true] ,[0 ,0 ,0 ,false] ,[3 ,2 ,0 ,true] ,[3 ,3 ,0 ,true]] , mute:[], difficult: 1, starred: false},
-    ])
+        { name: "C",  capo: 1, fingers: [{string:5,fret:1,barre:0,isExist:true},{string:3,fret:2,barre:0,isExist:true},{string:2,fret:3,barre:0,isExist:true},{isExist:false}], mute:1, difficult:0, starred:true },
+        { name: "C",  capo: 3, fingers: [{string:2,fret:1,barre:4,isExist:true},{string:3,fret:3,barre:0,isExist:true},{string:4,fret:3,barre:0,isExist:true},{string:5,fret:3,barre:0,isExist:true}], mute:1, difficult:0, starred:false },
+        { name: "C",  capo: 1, fingers: [{string:5,fret:1,barre:0,isExist:true},{string:3,fret:2,barre:0,isExist:true},{string:2,fret:3,barre:0,isExist:true},{string:6,fret:3,barre:0,isExist:true}], mute:1, difficult:0, starred:false },
+        { name: "G",  capo: 1, fingers: [{string:2,fret:2,barre:0,isExist:true},{string:1,fret:3,barre:0,isExist:true},{string:6,fret:3,barre:0,isExist:true},{isExist:false}], mute:0, difficult:0, starred:false },
+        { name: "D",  capo: 1, fingers: [{string:4,fret:2,barre:0,isExist:true},{string:6,fret:2,barre:0,isExist:true},{string:5,fret:3,barre:0,isExist:true},{isExist:false}], mute:3, difficult:0, starred:false },
+        { name: "Em", capo: 0, fingers: [{isExist:false},{string:2,fret:2,barre:0,isExist:true},{string:3,fret:2,barre:0,isExist:true},{isExist:false}], mute:0, difficult:0, starred:false },
+        { name: "Am", capo: 1, fingers: [{string:5,fret:1,barre:0,isExist:true},{string:3,fret:2,barre:0,isExist:true},{string:4,fret:2,barre:0,isExist:true},{isExist:false}], mute:1, difficult:0, starred:false },
+        { name: "F",  capo: 1, fingers: [{string:1,fret:1,barre:5,isExist:true},{string:4,fret:2,barre:0,isExist:true},{string:2,fret:3,barre:0,isExist:true},{string:3,fret:3,barre:0,isExist:true}], mute:0, difficult:0, starred:false },
+        { name: "Bm", capo: 1, fingers: [{string:2,fret:2,barre:4,isExist:true},{string:5,fret:3,barre:0,isExist:true},{string:3,fret:4,barre:0,isExist:true},{string:4,fret:4,barre:0,isExist:true}], mute:1, difficult:1, starred:false },
+        { name: "Gm", capo: 3, fingers: [{string:1,fret:1,barre:5,isExist:true},{isExist:false},{string:2,fret:3,barre:0,isExist:true},{string:3,fret:3,barre:0,isExist:true}], mute:0, difficult:1, starred:false }
+    ]);
+
+    useEffect(() => {
+        async function fetchData() {
+            try{
+                const response = await fetch(`http://localhost:3001/chords`, {
+                    method: "GET",
+                    headers: {
+                    }            
+                });
+                const data = await response.json()
+                if(data) {
+                    setRawChords(data)
+                }
+            }catch(err){
+                console.error(err);
+            }
+        }        
+        fetchData();
+    }, [])
 
 
 
@@ -39,7 +58,7 @@ function Chords() {
         let sortedChords = structuredClone(chords);
         let existingNames = new Map();
 
-        for(let i =0; i < sortedChords.length; i++) {
+        for(let i = 0; i < sortedChords.length; i++) {
             if (!(starredChords && !sortedChords[i].starred) && (sortedChords[i].difficult <= difficultLevel)) {
                 let name = sortedChords[i].name;
                 if (!existingNames.has(name)) {
@@ -122,12 +141,13 @@ function Chords() {
 };
 
 export function ChordDiagram({chord, onToggleStar, fontSize}) {
-    chord.open = findMinFret(chord);
-    const x = chord.numCapo > 9 ? 35 : 25;
+    const mute = openMute(chord.mute);
+    const open = findMinFret({...chord, mute});
+    const x = chord.capo > 9 ? 35 : 25;
     return (
         <>
-            {onToggleStar !== null ?<div className="star-button-container">
-                <StarButton className="star-button" starredChords={chord.starred} changeValue={onToggleStar}/>
+            {onToggleStar ?<div className="star-button-container">
+                <StarButton className="star-button" starredChords={chord.starred === undefined ? false : chord.starred} changeValue={onToggleStar} disabled={false}/>
             </div>: null}
             <div className="chord">
                 <p className="chord-name" style={{fontSize: fontSize}}>{chord.name}</p>
@@ -145,16 +165,16 @@ export function ChordDiagram({chord, onToggleStar, fontSize}) {
                         fill="#000000ff"
                         fontSize="20"
                         fontWeight="600"
-                    >{!chord.numCapo ? null : chord.numCapo === 1 ? "" : ` ${chord.numCapo}\u00A0\u00A0fret`}</text>
+                    >{!chord.capo ? null : chord.capo === 1 ? "" : ` ${chord.capo}\u00A0\u00A0fret`}</text>
                     <text
                         x={x} y="10"
                         fill="#000000ff"
                         fontSize="10"
                         fontWeight="600"
-                    >{!chord.numCapo ? null : chord.numCapo === 1 ? "" : chord.numCapo === 2 ? "nd" : chord.numCapo === 3 ? "rd" : "th"}</text>
+                    >{!chord.capo ? null : chord.capo === 1 ? "" : chord.capo === 2 ? "nd" : chord.capo === 3 ? "rd" : "th"}</text>
 
 
-                    {chord.numCapo > 1 ?<line x1="29" y1="70" x2="241" y2="70" stroke="#929292ff" strokeWidth="5"/>: null}
+                    {chord.capo > 1 ?<line x1="29" y1="70" x2="241" y2="70" stroke="#929292ff" strokeWidth="5"/>: null}
                     <line x1="25" y1="130" x2="245" y2="130" stroke="#929292ff" strokeWidth="5"/>
                     <line x1="25" y1="195" x2="245" y2="195" stroke="#929292ff" strokeWidth="5"/>
                     <line x1="25" y1="260" x2="245" y2="260" stroke="#929292ff" strokeWidth="5"/>
@@ -170,7 +190,7 @@ export function ChordDiagram({chord, onToggleStar, fontSize}) {
                         rx="10%" ry="10%"
                         stroke="#000000ff" strokeWidth="5" 
                         fill="#000000ff"
-                        clipPath={chord.numCapo === 1 || !chord.numCapo ? "url(#longClipPath)" : "url(#shortClipPath)"}
+                        clipPath={chord.capo === 1 || !chord.capo ? "url(#longClipPath)" : "url(#shortClipPath)"}
                     />
 
 
@@ -182,13 +202,13 @@ export function ChordDiagram({chord, onToggleStar, fontSize}) {
 
 
                     {chord.fingers.map((finger, index) => (
-                        finger[3] && finger[0] > 0 && finger[1] > 0 ?
+                        finger.isExist && finger.fret > 0 && finger.string > 0 ?
                             <React.Fragment key={index}>
                                             
                                 <rect
-                                    x={44 * (finger[1] - 1) + 5}
-                                    y={65 * (finger[0] - 1) + 80}
-                                    width={(finger[2]) * 44 + 40}
+                                    x={44 * (finger.string - 1) + 5}
+                                    y={65 * (finger.fret - 1) + 80}
+                                    width={(finger.barre || 0) * 44 + 40}
                                     height="40"
                                     rx="20"
                                     ry="20"
@@ -196,8 +216,8 @@ export function ChordDiagram({chord, onToggleStar, fontSize}) {
                                 />
 
                                 <text
-                                    y={65 * (finger[0] - 1) + 107}
-                                    x={44 * (finger[1] - 1) + 19 + (finger[2] * 22)}
+                                    y={65 * (finger.fret - 1) + 107}
+                                    x={44 * (finger.string - 1) + 19 + (finger.barre * 22)}
                                     fontSize="20"
                                     fontWeight="bold"
                                     fontFamily="Arial"
@@ -206,15 +226,15 @@ export function ChordDiagram({chord, onToggleStar, fontSize}) {
                             </React.Fragment>
                         : null
                     ))}
-                    {chord.mute.map((isMuted, index) => (
-                        isMuted ?
+                    {mute.map((isMuted, index) => (
+                        !isMuted ?
                         <React.Fragment key={index}>
-                            <line x1= {43 * (isMuted - 1) + 18} y1="25" x2={43 * (isMuted - 1) + 38} y2="45" stroke="#000000ff" strokeWidth="5" strokeLinecap="round"/>
-                            <line x1= {43 * (isMuted - 1) + 18} y1="45" x2={43 * (isMuted - 1) + 38} y2="25" stroke="#000000ff" strokeWidth="5" strokeLinecap="round"/>
+                            <line x1= {43 * (index) + 18} y1="25" x2={43 * (index) + 38} y2="45" stroke="#000000ff" strokeWidth="5" strokeLinecap="round"/>
+                            <line x1= {43 * (index) + 18} y1="45" x2={43 * (index) + 38} y2="25" stroke="#000000ff" strokeWidth="5" strokeLinecap="round"/>
                         </React.Fragment>
                         : null
                     ))}
-                    {chord.open.map((isOpen, index) => (
+                    {open.map((isOpen, index) => (
                         isOpen ?
                         <React.Fragment key={index}>
                             <circle cx={43 * (index) + 28} cy="35" r="10" fill="#00000000" stroke="#000000ff" strokeWidth="5"/>

@@ -1,6 +1,6 @@
 import './songs.css';
 
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import { useNavigate} from "react-router-dom";
 import { GlobalContext } from "../../../globalsIndex";
 import { XSvg } from "../../svg/svg";
@@ -27,6 +27,17 @@ function Songs() {
         normalizeText(songIF.artist).includes(normalizeText(searchInput))
     );
 
+    useEffect(() => {
+        const fetchSongs = async () => {
+            const response = await fetch("http://localhost:3001/songs", {
+                method: "GET",
+            });
+            const data = await response.json();
+            setServerSongsF(data);
+        };
+        fetchSongs();
+    }, []);
+
     return (
         <div className="container">
             <div className="contentSongs">
@@ -48,6 +59,16 @@ function Songs() {
                 {songs.length == 0 ? <div className="notF">
                     <span style={{color: "black", fontWeight:"700", fontSize: "3vw"}}>Sorry we didn't found anything...</span>
                     <span style={{color: "black", fontWeight:"500", fontSize: "1vw", marginTop: "0.5vw"}}>you can ask one of our admins on our about page to make what you are looking for</span>
+                    {userType === "creator" && 
+                        <>
+                            <span style={{color: "black", fontWeight:"500", fontSize: "1vw", marginTop: "0.5vw"}}>or create your own song</span>
+                            <button className="createSong" onClick={() =>{
+                                navigate("/createSong")
+                            }}>
+                                +
+                            </button>
+                        </>
+                    }
                 </div>
                 :<div className="songsContainer">
                     {userType === "creator" && <button className="createSong" onClick={() =>{
@@ -56,7 +77,7 @@ function Songs() {
                         +
                     </button>}
                     {songs.map((song) => (
-                        song.straredSong || !starredSong ? <SongCard key={song.songID} image={song.image} songName={song.songName} artist={song.artist} onClick={() => navigate(`/songs/${song.songID}`)}/>
+                        song.straredSong || !starredSong ? <SongCard key={song.songID} image={`http://localhost:3001/images/${song.songID}_song.webp`} songName={song.songName} artist={song.artist} onClick={() => navigate(`/songs/${song.songID}`)}/>
                         :null
                     ))}
                 </div>}

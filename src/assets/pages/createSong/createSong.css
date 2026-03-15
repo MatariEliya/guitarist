@@ -88,5 +88,5 @@
   font-size: 1vw;
   font-weight: 500;
   padding: 1vw;
-  border-radius: 2vw;
+  border-radius: 2vw, 2vw, 0.8vw, 0.8vw;
 }

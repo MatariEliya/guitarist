@@ -11,7 +11,6 @@ function Carousel({ children, className, style}) {
     if (index >= images.length) {
         setIndex(0);
     }
-    console.log("Carousel index:", index, "of", images.length);
     return (
         images.length === 0 ? null :
             <div className={`carousel ${className}`} style={style}>

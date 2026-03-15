@@ -1,6 +1,6 @@
 import './home.css';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/header';
 import { ProfileCard } from '../creators/creators';
@@ -10,16 +10,31 @@ function Home() {
   const navigate = useNavigate();
 
 
-  const creators = [
-    {creatorName: "Eliya matari", image: "https://i1.sndcdn.com/artworks-yozHWjWpjaFSXbvH-JVqSbg-t500x500.jpg", tags: ["chill", "pop", "Responds to requests"], profileID: "hdtjhfjgl"},
+  const [creators, setCreators] = useState([
+    /*{creatorName: "Eliya matari", image: "https://i1.sndcdn.com/artworks-yozHWjWpjaFSXbvH-JVqSbg-t500x500.jpg", tags: ["chill", "pop", "Responds to requests"], profileID: "hdtjhfjgl"},
     {creatorName: "Taylor Guitars", image: "https://www.taylorguitars.com/sites/default/files/images/2025-04/Academy_1024x1181.jpg", tags: ["rock", "live performances"], profileID: "jd12345"},
-    {creatorName: "Jane Smith", image: "https://example.com/janesmith.jpg", tags: ["jazz", "improvisation"], profileID: "js67890"},
-  ];
-  const songs = [
-    {songName: "Sunset Boulevard", artist: "Eliya matari", image: "https://i1.sndcdn.com/artworks-yozHWjWpjaFSXbvH-JVqSbg-t500x500.jpg", songID: "song123"},
-    {songName: "Rock Anthem", artist: "Taylor Guitars", image: "https://www.taylorguitars.com/sites/default/files/images/2025-04/Academy_1024x1181.jpg", songID: "song456"},
-    {songName: "Jazz Nights", artist: "Jane Smith", image: "https://example.com/janesmith.jpg", songID: "song789"},
-  ];
+    {creatorName: "Jane Smith", image: "https://example.com/janesmith.jpg", tags: ["jazz", "improvisation"], profileID: "js67890"}*/
+  ]);
+  const [songs, setSongs] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const Cresponse = await fetch("http://localhost:3001/creators", {
+        method: "GET",
+      });
+      const Sresponse = await fetch("http://localhost:3001/songs", {
+        method: "GET",
+      });
+      if(Cresponse.ok){
+        const Cdata = await Cresponse.json();
+        setCreators(Cdata);
+      }
+      if(Sresponse.ok){
+        const Sdata = await Sresponse.json();
+        setSongs(Sdata);
+      }
+    }
+    fetchData();
+  }, []);
   return (
     <div className='columnLayout'>
         <Header />
@@ -31,7 +46,7 @@ function Home() {
             {creators.map(
               (creator, index) =>
                 index < 5 && (
-                  <ProfileCard info={creator} onClick={() => navigate(`/creators/${creator.profileID}`)}/>
+                  <ProfileCard key={index} info={creator} onClick={() => navigate(`/creators/${creator.profileID}`)}/>
                 )
             )}
           </div>
@@ -42,7 +57,7 @@ function Home() {
             {songs.map(
               (song, index) =>
                 index < 5 && (
-                  <SongCard key={song.songID} image={song.image} songName={song.songName} artist={song.artist} onClick={() => navigate(`/songs/${song.songID}`)}/>
+                  <SongCard key={song.songID} image={`http://localhost:3001/images/${song.songID}_song.webp`} songName={song.songName} artist={song.artist} onClick={() => navigate(`/songs/${song.songID}`)}/>
                 )
             )}
           </div>

@@ -3,13 +3,16 @@ import { useState } from "react";
 import './textField.css';
 import { PasswordEyeSvg } from "../../assets/svg/svg";
 
-function TextField({type, text, value, Icon, className, maxLength, onChange, onEnter}) {
+function TextField({type, text, value, Icon, className, maxLength, onChange, onEnter, noSpace}) {
     const [showPassword, setShowPassword] = useState(false);
     const effectiveType = showPassword ? "text" : type == "number" ? "text" : type;
 
 
     const handleChange = (e) => {
         const newValue = e.target.value;
+        if(noSpace && newValue.includes(" ")){
+            return
+        }
         if (type === "number") {
             if (newValue === '' || /^[0-9]+$/.test(newValue)){
                 onChange(newValue);
@@ -29,7 +32,7 @@ function TextField({type, text, value, Icon, className, maxLength, onChange, onE
     return(
         <div className="textFieldContainer">
             <input 
-                value={value !== undefined ? value : ""}
+                value={value ? value : ""}
                 placeholder={text}
                 type={effectiveType} 
                 name="text" 

@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ReturnSvg } from "../../../svg/svg";
 import StarButton from "../../../../components/starButton/starButton";
 import { ChordDiagram } from "../../chords/chords";
 import "./songPage.css";
 
 function CreatorPage (){
+    const navigate = useNavigate();
+    const {songID} = useParams();
+
 
     const [starredSong, setStarredSong] = useState(false);
 
@@ -17,8 +20,20 @@ function CreatorPage (){
     ], lyrics: "hljkgu{0}gu jkgk{2}hl jgjkgk{1}{-1}j{0}g{-1}{-1}{-1}l{2}p"});
     
 
-    const navigate = useNavigate();
-
+    useEffect(() => {
+        async function loadSong() {
+            const response = await fetch(`http://localhost:3001/songs/${songID}`, {
+                method: "GET"
+            });
+            if(!response.ok){
+                console.error("Failed to load song:", response.statusText);
+                return;
+            }
+            const song = await response.json();
+            setSong(song);
+        }
+        loadSong();
+    }, [songID]);
     return (
         <div className="container">
             <div className="songContainer">
@@ -38,9 +53,9 @@ function CreatorPage (){
                     {song.songName}
                 </span>
                 <div className="chords-container" style={{backgroundColor: "rgba(255, 255, 255, 0.4)", borderRadius: "3vw", paddingBottom: "1.5vw", marginBottom: "1vw", gap: "1vw"}}>
-                    {song.chords.map((chord) =>{
+                    {song.chords.map((chord, index) =>{
                         return(
-                            <div style={{width: "16vw", height: "22vw", zoom: 0.7, backgroundColor: "white", borderRadius: "2vw", padding: "0.5vw", paddingTop: "0"}}>
+                            <div key={index} style={{width: "16vw", height: "22vw", zoom: 0.7, backgroundColor: "white", borderRadius: "2vw", padding: "0.5vw", paddingTop: "0"}}>
                                 <ChordDiagram chord={chord}/>
                             </div>
                             
@@ -59,13 +74,14 @@ export default CreatorPage;
 
 export function SongLyrics({ text, chords }) {
     let sectionWithChords = [];
-    const sections = text.split(/\{(-?\d+)\}/);
+    const sections = text.split(/(\n|\{\d+\})/);
     let chord;
     for(const section of sections){
-        if(/^[0-9]/.test(section)){
-            chord = chords[parseInt(section)]
-        }else if(/^-?\d+$/.test(section)){
+        if(section === "\n"){
             sectionWithChords.push({sentence: null});
+        }else if (/^\{\d+\}$/.test(section)) {
+            const index = parseInt(section.slice(1, -1));
+            chord = chords[index];
         }else{
             sectionWithChords.push({sentence: section, chord: chord});
             chord = null;
@@ -75,7 +91,7 @@ export function SongLyrics({ text, chords }) {
         <div className = "lyricsContainer">
             {sectionWithChords.map((s, idx) => (
                 s.sentence == null?
-                <div className="rowContent left"/>
+                <div key={idx} className="rowContent left"/>
                 :<div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <span style={{ display: "inline-block", height: "1vw", fontWeight: s.chord ? "bold" : "normal", color: s.chord ? "black" : "transparent", fontSize: "1.5vw" , marginBottom: "0.5vw"}}>
                         {s.chord || ""}

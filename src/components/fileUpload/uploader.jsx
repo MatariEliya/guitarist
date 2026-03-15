@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./uploader.css"
 import { UploaderSvg } from "../../assets/svg/svg";
 import { compressImage } from "./compressImage";
+import { GlobalContext } from "../../globalsIndex";
 
 
-function Uploader({onImageUpload}) {
+function Uploader({onImageUpload, defaultImage, setIsDefaultImage}) {
     const [image, setImage] = useState(null)
-    const previewUrl = image ? URL.createObjectURL(image) : null;
+    const [defultImageStats, setDefultImageStats] = useState(defaultImage);
+    const previewUrl = image ? URL.createObjectURL(image) : defultImageStats;
+
+    
+    useEffect(() => {
+        setDefultImageStats(defaultImage);
+    }, [defaultImage]);
 
     return (
-        !image ? <label className="custum-file-upload">
+        !previewUrl ? <label className="custum-file-upload">
             <div className="icon">
-                    
-                    <UploaderSvg/>
+                <UploaderSvg/>
             </div>
             <div className="text">
                 <span style={{fontSize: "1vw", fontWeight: "500"}}>Click to upload image</span>
@@ -38,6 +44,9 @@ function Uploader({onImageUpload}) {
         </label>:(
             <button style={{padding: "0", width: "20vw", height: "20vw", background: "none", borderRadius: "2vw"}} onClick={() => {
                 setImage(null)
+                setDefultImageStats(null)
+                onImageUpload(null);
+                setIsDefaultImage ? setIsDefaultImage(false) : null;
             }}>
                 <img 
                     src={previewUrl} 

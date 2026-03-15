@@ -3,6 +3,7 @@ import Header from './components/header'
 import Footer from './components/footer'
 import Button from '@mui/material/Button';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 
 
 import Home from './assets/pages/home/home';
@@ -34,7 +35,25 @@ import { GlobalProvider, GlobalContext} from './globalsIndex';
 
 
 function AppShell() {
-  const {userType} = useContext(GlobalContext);
+  const {setUsername, setUserType} = useContext(GlobalContext);
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+        if(decoded.exp > currentTime){
+          setUsername(decoded.username);
+          setUserType(decoded.creator ? "creator" : "member");
+        }else{
+          setUserType("guest")
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+      }
+    }
+  }, []);
+
 
   const location = useLocation();
 
@@ -63,7 +82,7 @@ function AppShell() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/creators" element={<Creators />} />
-            <Route path="/creators/:profileID" element={<CreatorPage />} />
+            <Route path="/creators/:creatorID" element={<CreatorPage />} />
             <Route path="/chords" element={<Chords />} />
             <Route path="/songs" element={<Songs />} />
             <Route path="/songs/:songID" element={<SongPage />} />

@@ -13,7 +13,7 @@ import { ProfileSvg } from '../../../assets/svg/svg';
 function MainMenu({ options = [] }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userType } = useContext(GlobalContext);
+  const { userType, username } = useContext(GlobalContext);
 
   const handleChange = (path) => {
     navigate(path);
@@ -26,7 +26,7 @@ function MainMenu({ options = [] }) {
     : location.pathname;
 
   const menuOptions = [
-    { value: userType === "guest" ? "/loginSignup" : "/profile", label: <ProfileSvg userType={userType} />, menu: false },
+    { value: userType === "guest" ? "/loginSignup" : "/profile", label: <ProfileSvg userType={userType} username={username}/>, menu: false },
     ...options
   ];
 
