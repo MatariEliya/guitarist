@@ -18,7 +18,7 @@ function Menu({ className = '' ,location, onChange, options = [], extraWidth = 0
                 <label 
                     className={`radio ${option.value.toString().split('/')[1]}`} 
                     key={index}
-                    style={{ cursor: "pointer" }}   // 🔥 מוסיף יד
+                    style={{ cursor: "pointer" }}
                 >
                     <input
                         type="radio"
@@ -29,7 +29,7 @@ function Menu({ className = '' ,location, onChange, options = [], extraWidth = 0
 
                     {React.isValidElement(option.label)
                         ? React.cloneElement(option.label, { 
-                            style: { flex: 1, width: "100%", cursor: "pointer" } 
+                            style: { flex: 1, width: "100%", cursor: "pointer"} 
                         })
                         : <span className="name" style={{ flex: 1 }}>
                             {option.label}

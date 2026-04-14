@@ -16,8 +16,8 @@
 .lyricsContainer{
     display: flex;
     flex-wrap: wrap;
-    margin-left: 3vw;
+    margin: 0 3vw;
     margin-bottom: 2vw;
-    overflow: hidden; /* כאן זה מה שחוסם את החריגה */
+    overflow: hidden;
 }
 

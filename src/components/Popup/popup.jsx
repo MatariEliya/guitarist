@@ -24,10 +24,7 @@ function Popup () {
                 {popupInfo.object}
 
                 <button className="popupCloseButton"
-                    onClick={() => setPopupInfo(prev => ({
-                        ...prev,
-                        isOpen: false
-                    }))}>
+                    onClick={() => setPopupInfo({header: "", text: "", object: null, isOpen: false})}>
                     X
                 </button>
             </div>

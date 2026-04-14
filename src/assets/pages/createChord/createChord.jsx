@@ -114,7 +114,6 @@ function CreateChord() {
             barre: finger.barre? Number(finger.barre) : null,
             isExist: finger.isExist? true : false
         }));
-        console.log(fingersData)
         const serverChordInfo = {
             name: chordInfo.name,
             numCapo: chordInfo.numCapo? Number(chordInfo.numCapo) : 0,
@@ -137,7 +136,7 @@ function CreateChord() {
             navigate(-1);
         } else {
             // אם הייתה שגיאה, אפשר להציג הודעת שגיאה למשתמש
-            console.error("Failed to save chord");
+            openPopup({text: "Failed to save chord. Please try again."});
         }
     }
 

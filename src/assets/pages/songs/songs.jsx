@@ -1,6 +1,6 @@
 import './songs.css';
 
-import React, {useState, useContext, useEffect} from "react";
+import React, {useState, useContext, useEffect, useMemo} from "react";
 import { useNavigate} from "react-router-dom";
 import { GlobalContext } from "../../../globalsIndex";
 import { XSvg } from "../../svg/svg";
@@ -19,34 +19,42 @@ function Songs() {
 
 
     const [serverSongsF, setServerSongsF] = useState([
-        {songID: "gtg8t67v", image:"https://upload.wikimedia.org/wikipedia/en/6/69/Elton_John_StillStanding.jpg", songName: "I'm still standing", artist: "Elton John", straredSong: true},
-        {songID: "uh7yiuhu", image:"https://i1.sndcdn.com/artworks-yozHWjWpjaFSXbvH-JVqSbg-t500x500.jpg", songName: "Beautiful things", artist: "Benson Boone", straredSong: false}
+        {songID: "gtg8t67v", image:"https://upload.wikimedia.org/wikipedia/en/6/69/Elton_John_StillStanding.jpg", songName: "I'm still standing", artist: "Elton John", favorite: true},
+        {songID: "uh7yiuhu", image:"https://i1.sndcdn.com/artworks-yozHWjWpjaFSXbvH-JVqSbg-t500x500.jpg", songName: "Beautiful things", artist: "Benson Boone", favorite: false}
     ]);
-    const songs = serverSongsF.filter(songIF =>
-        normalizeText(songIF.songName).includes(normalizeText(searchInput)) ||
-        normalizeText(songIF.artist).includes(normalizeText(searchInput))
-    );
 
+    const songs = useMemo(() => {
+        if(starredSong){
+            return serverSongsF.filter(song => song.favorite);
+        }
+        return serverSongsF;
+    }, [serverSongsF, starredSong]);
     useEffect(() => {
+        console.log("http://localhost:3001/songs?search=" + normalizeText(searchInput));
         const fetchSongs = async () => {
-            const response = await fetch("http://localhost:3001/songs", {
+            const response = await fetch("http://localhost:3001/songs?search=" + normalizeText(searchInput), {
                 method: "GET",
+                headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem("token")
+                }
             });
             const data = await response.json();
             setServerSongsF(data);
         };
         fetchSongs();
-    }, []);
+    }, [searchInput]);
 
     return (
         <div className="container">
             <div className="contentSongs">
                 <div style={{width: "100%", position: "relative"}}>
-                    <button className="starButtonContainer" style={{position: "absolute", left: "30%", top: "1vw"}} onClick={() => {
-                        setStarredSong(!starredSong);
-                    }}>
-                        <StarButton starredChords={starredSong} disabled={true}/>
-                    </button>
+                    {userType !== "guest" &&
+                        <button className="starButtonContainer" style={{position: "absolute", left: "30%", top: "1vw"}} onClick={() => {
+                            setStarredSong(!starredSong);
+                        }}>
+                            <StarButton starredChords={starredSong} disabled={true}/>
+                        </button>
+                    }
                     <TextField className="searchInput" text="Search song or artist..." value={searchInput} onChange={(value) => {
                         setSearchInput(value)
                     }}></TextField>
@@ -77,14 +85,9 @@ function Songs() {
                         +
                     </button>}
                     {songs.map((song) => (
-                        song.straredSong || !starredSong ? <SongCard key={song.songID} image={`http://localhost:3001/images/${song.songID}_song.webp`} songName={song.songName} artist={song.artist} onClick={() => navigate(`/songs/${song.songID}`)}/>
-                        :null
+                        <SongCard key={song.songID} image={`http://localhost:3001/images/${song.songID}_song.webp`} songName={song.songName} artist={song.artist} onClick={() => navigate(`/songs/${song.songID}`)}/>
                     ))}
                 </div>}
-                <div className="rowContent" style={{margin: "1vw 0"}}>
-                    <button style={{width: "7vw", height: "3.5vw", fontSize: "1.1vw", fontWeight: "600"}}>previus</button>
-                    <button style={{width: "7vw", height: "3.5vw", fontSize: "1.1vw", fontWeight: "600"}}>next</button>
-                </div>
             </div>
         </div>
     );
@@ -98,7 +101,7 @@ function normalizeText(str) {
         .trim();                       // מסיר רווחים מיותרים בתחילת/סוף
 }
 
-export function SongCard({className, onClick, image, songName, artist, fontSize}) {
+export function SongCard({className, onClick, image, songName, artist = "unknown artist", fontSize}) {
     return(
         <button className={`songButton ${className || ""}`} onClick={onClick} onError={(e) => {
             e.target.src = defaultSongImg
@@ -107,7 +110,7 @@ export function SongCard({className, onClick, image, songName, artist, fontSize}
             <div className="songInfo">
                 <span className="songName" style={{fontSize: `${fontSize || "2"}vw`}}>{songName}</span>
                 <span className="artistName" style={{ fontSize: fontSize ? `${fontSize * 0.4}vw` : "0.8vw" }}>
-                by: {artist}
+                by: {artist ? artist : "unknown artist"}
                 </span>
             </div>
         </button>

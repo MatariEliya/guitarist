@@ -34,7 +34,7 @@
 
 .chord-item:hover > * {
   border-color: rgba(234, 246, 59, 0.4); /* כחול */
-  box-shadow: 0 0 5vw rgba(234, 246, 59, 0.4); /* הילה כחולה */
+  box-shadow: 0 0 5vw rgba(234, 246, 59, 0.7); /* הילה כחולה */
 }
 
 .star-button-container{

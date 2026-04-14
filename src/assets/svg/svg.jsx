@@ -185,3 +185,18 @@ export function TrashSvg({width="2vw", height="2vw"}) {
         </svg>
     );
 }
+
+export function CheckboxSvg() {
+    return (
+        <svg fill="none" viewBox="0 0 24 24" className="checkbox-icon">
+            <path
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="3"
+                stroke="currentColor"
+                d="M4 12L10 18L20 6"
+                className="check-path"
+            ></path>
+        </svg>
+    );
+}

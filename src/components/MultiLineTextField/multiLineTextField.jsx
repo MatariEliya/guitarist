@@ -1,10 +1,11 @@
 import React from "react";
 import "./multiLineTextField.css";
 
-function MultiLineTextField({ className, text, value, onChange}) {
+function MultiLineTextField({ className, text, value, onChange, startOnRight = false }) {
   return (
     <div style={{position: "relative"}}>
         <textarea
+            dir={startOnRight ? "rtl" : "ltr"}
             placeholder={text}
             rows={6}
             className={`multiLineTextField ${className}`}

@@ -1,6 +1,6 @@
 import "./creators.css"
 
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { GlobalContext } from "../../../globalsIndex";
@@ -10,7 +10,7 @@ import defaultCreatorImg from '../../images/guitarPlayer.png';
 
 function Creators (){
 
-  const { userType, setUserType, username} = useContext(GlobalContext);
+  const { userType, username} = useContext(GlobalContext);
   const navigate = useNavigate();
 
   const [profileCard, setProfileCard] = useState(null)
@@ -24,9 +24,7 @@ function Creators (){
 
     const fetchData = async () => {
       const profiles = await fetch("http://localhost:3001/creators", {
-        method: "GET",
-        headers: {
-        }
+        method: "GET"
       });
       const profilesData = await profiles.json();
       setPublicProfileCard(profilesData);
@@ -61,10 +59,8 @@ function Creators (){
           <ProfileCard info={profileCard} onClick={() => navigate("/createCreatorProfile")}/>
         : <button className="createProfileCard" onClick={() => navigate("/createCreatorProfile")}>+</button>}
         </div> : null}
-        <div style={{ backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: "2vw", margin: "0", padding: "2vw", width: "100%"}}>
-          <TextField text={"Search Creators..."} className={"searchCreatorsInput"} onChange={(value) => {console.log(value)}}/>
-          
-          <div className="groupContent" style={{position: "relative", gap: "2vw", padding: "3vw", borderRadius: "2vw", marginTop: "4vw"}}>
+        <div style={{ backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: "2vw", margin: "0", padding: "2vw", width: "100%"}}>          
+          <div className="groupContent" style={{position: "relative", gap: "2vw", padding: "0 2vw", borderRadius: "2vw"}}>
             {publicProfileCard.map((pubProfileCard) =>
               <ProfileCard key={pubProfileCard.profileID} info={pubProfileCard} onClick={() => navigate(`/creators/${pubProfileCard.profileID}`)}/>
             )}

@@ -90,6 +90,16 @@ header {
   src: url("assets/fonts/SparkyStonesRegular-BW6ld.ttf") format('opentype');
   font-weight: normal; 
   font-style: normal;
+  unicode-range: U+0000-007F; /* English */
+}
+@font-face {
+  font-family: 'songsNamesFonts';
+  src: url("assets/fonts/ganclm_bold-webfont.ttf") format('opentype');
+  font-weight: normal; 
+  font-style: normal;
+  unicode-range: U+0590-05FF; /* עברית */
+
+
 }
 
 .container {

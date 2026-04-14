@@ -1,57 +1,99 @@
-/* From Uiverse.io by SelfMadeSystem */ 
-/* Hide the default checkbox */
-.checkbox-container input   {
-  display: none;
+.checkbox-container {
+  display: flex;
+  background: #f8fafc;
+  border-radius: 0.5vw;
 }
 
-.checkbox-container {
-  display: block;
+.ios-checkbox {
+  --checkbox-size: 2vw;
+  --checkbox-color: #8c009e;
+  --checkbox-bg: #dbeafe;
+  --checkbox-border: #95509e;
+
   position: relative;
+  display: inline-block;
   cursor: pointer;
-  font-size: 1.4vw;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Create a custom checkbox */
-.checkmark {
+.ios-checkbox input {
+  display: none;
+}
+
+.checkbox-wrapper {
   position: relative;
-  top: 0;
-  left: 0;
-  height: 2vw;
-  width: 2vw;
-  background-color: #2196F300;
-  border-radius: 0.4vw;
-  transition: all 0.25s;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  border-radius: 0.5vw;
+  transition: transform 0.2s ease;
 }
 
-/* When the checkbox is checked, add a blue background */
-.checkbox-container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  content: "";
+.checkbox-bg {
   position: absolute;
-  transform: rotate(0deg);
-  border: 0.15vw solid black;
-  left: 0;
-  top: 0;
-  width: 1.6vw;
-  height: 1.6vw;
-  border-radius: 0.4vw;
-  transition: all 0.25s, border-width 0.1s;
+  inset: 0;
+  border-radius: 0.5vw;
+  border: 0.25vw solid var(--checkbox-border);
+  background: white;
+  transition: all 0.2s ease;
 }
 
-/* Show the checkmark when checked */
-.checkbox-container input:checked ~ .checkmark:after {
-  left: 0.7vw;
-  top: 0.4vw;
-  width: 0.4vw;
-  height: 0.8vw;
-  border-color: #fff0 white white #fff0;
-  border-width: 0 0.25vw 0.25vw 0;
-  border-radius: 0;
-  transform: rotate(45deg);
+.checkbox-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 80%;
+  height: 80%;
+  color: white;
+  transform: scale(0);
+  transition: all 0.2s ease;
+}
+
+.check-path {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  transition: stroke-dashoffset 0.3s ease 0.1s;
+}
+
+/* Checked State */
+.ios-checkbox input:checked + .checkbox-wrapper .checkbox-bg {
+  background: var(--checkbox-color);
+  border-color: var(--checkbox-color);
+}
+
+.ios-checkbox input:checked + .checkbox-wrapper .checkbox-icon {
+  transform: scale(1);
+}
+
+.ios-checkbox input:checked + .checkbox-wrapper .check-path {
+  stroke-dashoffset: 0;
+}
+
+/* Hover Effects */
+.ios-checkbox:hover .checkbox-wrapper {
+  transform: scale(1.05);
+}
+
+/* Active Animation */
+.ios-checkbox:active .checkbox-wrapper {
+  transform: scale(0.95);
+}
+
+/* Focus Styles */
+.ios-checkbox input:focus + .checkbox-wrapper .checkbox-bg {
+  box-shadow: 0 0 0 4px var(--checkbox-bg);
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.ios-checkbox input:checked + .checkbox-wrapper {
+  animation: bounce 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

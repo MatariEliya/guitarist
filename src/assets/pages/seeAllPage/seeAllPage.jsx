@@ -57,7 +57,8 @@ function SeeAllPage() {
                         setServerData(chordsData);
                     }
                 }else if(type === "createdSongs"){
-                    const data = await fetch(`http://localhost:3001/songs?creatorId=${user_id}`, {
+                    console.log(user_id)
+                    const data = await fetch(`http://localhost:3001/songs/byCreator/${user_id}`, {
                         method: "GET"
                     });
                     const songsData = await data.json();
@@ -156,10 +157,6 @@ function SeeAllPage() {
                             "requests"}</span>
                         </div>
                     }
-                </div>
-                <div className="rowContent" style={{margin: "1vw"}}>
-                    <button style={{width: "7vw", height: "3.5vw", fontSize: "1.1vw", fontWeight: "600"}}>previus</button>
-                    <button style={{width: "7vw", height: "3.5vw", fontSize: "1.1vw", fontWeight: "600"}}>next</button>
                 </div>
             </div>
         </div>

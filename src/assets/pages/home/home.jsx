@@ -18,10 +18,10 @@ function Home() {
   const [songs, setSongs] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const Cresponse = await fetch("http://localhost:3001/creators", {
+      const Cresponse = await fetch("http://localhost:3001/creators/featured", {
         method: "GET",
       });
-      const Sresponse = await fetch("http://localhost:3001/songs", {
+      const Sresponse = await fetch("http://localhost:3001/songs/popular", {
         method: "GET",
       });
       if(Cresponse.ok){
@@ -67,7 +67,7 @@ function Home() {
           <p style={{color: "rgb(58, 58, 58)", fontSize: '1vw', width: "100%", textAlign: "center", padding: "1vw"}}>
             This website was created as a final project for a high school Computer Science program and is dedicated to learning and exploring guitar playing.
             <br/>
-            The platform allows creators to upload original content such as songs, chord progressions, and guitar lessons. Users can browse this content, learn at their own pace, and interact with creators by sending song or lesson requests.
+            The platform allows creators to upload original content such as songs and chords. Users can browse this content, learn at their own pace, and interact with creators by sending song requests.
             <br/>
             In addition to learning materials, the website includes useful tools for guitar players, such as a built-in guitar tuner, designed to make practicing easier and more accessible.
             <br/>

@@ -15,7 +15,7 @@ import Uploader from "../../../components/fileUpload/uploader";
 import { ChordDiagram } from "../chords/chords";
 import { SongCard} from "../songs/songs";
 import { SongLyrics } from "../songs/songPage/songPage";
-
+import Checkbox from "../../../components/checkbox/checkbox";
 function CreateSong () {
     const { userType } = useContext(GlobalContext);
 
@@ -39,19 +39,17 @@ function CreateSong () {
     const [Image, setImage] = useState(null); // הקובץ עצמו
     const imagePreview = Image ? URL.createObjectURL(Image) : null;
     const [usedChord, setUsedChord] = useState([])
+    const [startOnRight, setStartOnRight] = useState(false);
     const [lyrics, setLyrics] = useState("");
 
 
     useEffect(() => {
         async function loadChords() {
-            const decodedToken = jwtDecode(sessionStorage.getItem("token"));
-
-            const response = await fetch(`http://localhost:3001/chords/${decodedToken.user_id}`, {
+            const response = await fetch(`http://localhost:3001/chords`, {
                 method: "GET",
             });
 
             const chordsData = await response.json();
-            console.log("chords data: ", chordsData)
             setChords(chordsData);
         }
         if (userType === "creator"){ 
@@ -63,7 +61,7 @@ function CreateSong () {
 
     const scrollLyrics = (
         <div className="scroll-area" style={{width: "60vw", height: "80vh", marginRight: "5vw"}}>
-            <SongLyrics text={lyrics} chords={usedChord.map(chordIdx => chords[chordIdx].name)} />
+            <SongLyrics text={lyrics} chords={usedChord.map(chordIdx => chords[chordIdx].name)} StartOnRight={startOnRight}/>
         </div>
     );
 
@@ -73,6 +71,7 @@ function CreateSong () {
         formData.append("image", Image);
         formData.append("songName", songName);
         formData.append("artistName", artistName);
+        formData.append("startOnRight", startOnRight);
         formData.append("lyrics", lyrics);
         formData.append("chords", JSON.stringify(
             usedChord.map((chordIdx, order) => ({
@@ -175,12 +174,16 @@ function CreateSong () {
                             )
                         })}
                     </div>
+                    <div className="rowContent">
+                        <span style={{color: "black", fontSize: "1.2vw", fontWeight: "500"}}>start the lyrics on the right, for languages like hebrew or arabic</span>
+                        <Checkbox checked={startOnRight} onChange={() => setStartOnRight(!startOnRight)}/>
+                    </div>
                     <button className="text-button" onClick={() =>{
                         openPopup({header: "Lyrics instructions", text: "To write a chord symbol, write {chord number}"})
                     }}>
                         Lyrics instructions
                     </button>
-                    <MultiLineTextField className={"lyricsTextInput"} text={"Write here the song's lyrics"} onChange={setLyrics}/>
+                    <MultiLineTextField className={"lyricsTextInput"} text={"Write here the song's lyrics"} onChange={setLyrics} value={lyrics} startOnRight={startOnRight}/>
                     <button className="text-button" onClick={() => {
                         openPopup({object: scrollLyrics})
                     }}>

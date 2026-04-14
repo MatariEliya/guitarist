@@ -85,10 +85,12 @@ function LoginPage() {
                             async () => {
                                 if(passwordInput.trim() == secPasswordInput.trim()){
                                     if(passwordInput.trim() != "" && usernameInput.trim() != ""){
-                                        const success = await signUp(usernameInput.trim(), passwordInput.trim(), setUserType)
+                                        const success = await signUp(usernameInput.trim(), passwordInput.trim(), setUserType, setUsername);
                                         if(success){
                                             console.log(localStorage.getItem("token"))
                                             navigate("/")
+                                        }else{
+                                            openPopup({text: "Username already exists"})
                                         }
                                     }else{
                                         openPopup({text: "Username and password should not be empty."})
@@ -139,7 +141,7 @@ async function logIn(username, password, setUserType, setUsername) {
         return false;
     }
 }
-async function signUp(username, password, setUserType) {
+async function signUp(username, password, setUserType, setUsername) {
     try {
         const res = await fetch("http://localhost:3001/signup", {
             method: "POST",
@@ -152,6 +154,7 @@ async function signUp(username, password, setUserType) {
         if (res.ok) {
             sessionStorage.setItem("token", data.token);
             setUserType("member")
+            setUsername(username)
             return true;
         }
         
