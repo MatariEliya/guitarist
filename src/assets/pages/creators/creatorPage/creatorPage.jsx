@@ -50,7 +50,7 @@ function CreatorPage(){
         async function fetchData() {
             try{
                 const response = await fetch(`http://localhost:3001/creators/creatorInfo/${creatorID}`, {
-                    method: "GET"            
+                    method: "GET"
                 });
                 const data = await response.json()
                 if(response.ok){

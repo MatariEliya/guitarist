@@ -1,8 +1,7 @@
-import React, {useState, useEffect } from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useState, useEffect, useRef } from "react";
+import {useNavigate, useLocation} from "react-router-dom";
 import { useContext } from "react";
 import { GlobalContext } from "../../../globalsIndex";
-import { jwtDecode } from "jwt-decode";
 
 
 
@@ -22,6 +21,7 @@ function CreateSong () {
     const {openPopup} = usePopup();
 
     const navigate = useNavigate();
+    const location = useLocation();
     const [page, setPage] = useState(0);
 
     const [ chords, setChords ] = useState([
@@ -34,6 +34,8 @@ function CreateSong () {
         {chordId: 59, name: "F", numCapo: 1, fingers:[[1, 1, 5, true], [2, 4, 0, true], [3, 2, 0, true], [3, 3, 0, true]] , mute:[], difficult: 0, starred: false},
     ])
 
+    const [onEdit, setOnEdit] = useState(false);
+
     const [songName, setSongName] = useState("")
     const [artistName, setArtistName] = useState("")
     const [Image, setImage] = useState(null); // הקובץ עצמו
@@ -42,6 +44,7 @@ function CreateSong () {
     const [startOnRight, setStartOnRight] = useState(false);
     const [lyrics, setLyrics] = useState("");
 
+    const firstRender = useRef(true);
 
     useEffect(() => {
         async function loadChords() {
@@ -51,6 +54,10 @@ function CreateSong () {
 
             const chordsData = await response.json();
             setChords(chordsData);
+            if(firstRender.current){
+                onFirstRender(chordsData);
+                firstRender.current = false;
+            }
         }
         if (userType === "creator"){ 
             loadChords();
@@ -58,6 +65,48 @@ function CreateSong () {
             console.log("user is not a creator");
         }
     }, [userType]);
+
+    function onFirstRender(chordsData){
+        if(userType !== "creator"){
+            navigate("/songs")
+        }
+        async function loadSongData(songID) {
+            const data = await fetch(`http://localhost:3001/songs/${songID}`, {
+                method: "GET",
+            });
+            const songData = await data.json();
+            console.log(songData);
+            setSongName(songData?.songName);
+            setArtistName(songData?.artist);
+            setStartOnRight(songData?.startOnRight);
+            setLyrics(songData?.lyrics);
+            setUsedChord(songData?.chords.map(chord => {
+                const chordIndex = chordsData.findIndex(c => c.chordId === chord.chordId);
+                return chordIndex;
+            }));
+            await loadImage(songID);
+        }
+        if(location.state?.songID){
+            loadSongData(location.state.songID);
+            setOnEdit(true);
+        }else{
+            setOnEdit(false);
+        }
+    }
+
+    async function loadImage(songID) {
+        const response = await fetch(`http://localhost:3001/images/${songID}_song.webp`);
+        if (response.ok) {
+            const blob = await response.blob();
+
+            const file = new File([blob], "image.jpg", { type: blob.type });
+
+            setImage(file);
+        }
+    }
+    
+
+
 
     const scrollLyrics = (
         <div className="scroll-area" style={{width: "60vw", height: "80vh", marginRight: "5vw"}}>
@@ -79,17 +128,31 @@ function CreateSong () {
                 indexChord: order
             }))
         ));
-        const response = await fetch("http://localhost:3001/songs", {
-            method: "POST",
-            headers: {
-                Authorization: "Bearer " + sessionStorage.getItem("token"),
-            },
-            body: formData
-        });
-        if(!response.ok){
-            return false
+        if(onEdit){
+            const response = await fetch(`http://localhost:3001/songs/${location.state.songID}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem("token"),
+                },
+                body: formData
+            });
+            if(!response.ok){
+                return false
+            }
+            return true
+        }else{
+            const response = await fetch("http://localhost:3001/songs", {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem("token"),
+                },
+                body: formData
+            });
+            if(!response.ok){
+                return false
+            }
+            return true
         }
-        return true
 
     }
 
@@ -129,7 +192,7 @@ function CreateSong () {
                 /*page 1*/
                 : page == 1 ? <div className="rowContent left" style={{paddingRight:"1vw"}}>
                     <div className="columnLayout" style={{width: "50%"}}>
-                        <span style={{color: "black", fontSize: "1.5vw", fontWeight: "500"}}>your chords/ your starred chord</span>
+                        <span style={{color: "black", fontSize: "1.5vw", fontWeight: "500"}}>choose chords from the list</span>
                         <div className="chords-container scroll-area" style={{width: "85%", height: "31vw", padding: "0.5vw", marginLeft: "3vw", gap: "1vw"}}>
                             {chords.map((chord, idx) =>{
                                 return(
@@ -139,7 +202,6 @@ function CreateSong () {
                                         <ChordDiagram chord={chord} fontSize={"1vw"}/>
                                     </button>
                                     : null
-                                                        
                                 );
                             })}
                         </div>

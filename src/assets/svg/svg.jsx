@@ -186,6 +186,26 @@ export function TrashSvg({width="2vw", height="2vw"}) {
     );
 }
 
+export function PencilSvg({width="4vw", height="4vw"}) {
+    return (
+        <svg width={width} height={height} viewBox="30 30 150 150" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <g transform="rotate(45 100 100)">
+                
+                <rect x="60" y="90" width="80" height="20"/>
+                
+                <rect x="50" y="90" width="10" height="20"/>
+                
+                <rect x="60" y="90" width="5" height="20"/>
+                
+                <polygon points="140,90 160,100 140,110"/>
+                
+                <polygon points="160,100 155,97 155,103"/>
+                
+            </g>
+        </svg>
+    )
+}
+
 export function CheckboxSvg() {
     return (
         <svg fill="none" viewBox="0 0 24 24" className="checkbox-icon">

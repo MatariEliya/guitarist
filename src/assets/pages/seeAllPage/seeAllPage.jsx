@@ -11,7 +11,7 @@ import { useContext } from "react";
 
 import { ChordDiagram } from "../chords/chords";
 import { SongCard } from "../songs/songs";
-import { ReturnSvg, TrashSvg } from "../../svg/svg";
+import { ReturnSvg, TrashSvg, PencilSvg } from "../../svg/svg";
 
 
 
@@ -49,7 +49,7 @@ function SeeAllPage() {
                         setServerData(requestsData);
                     }
                 }else if(type === "createdChords"){
-                    const data = await fetch(`http://localhost:3001/chords/${user_id}`, {
+                    const data = await fetch(`http://localhost:3001/chords/byCreator/${user_id}`, {
                         method: "GET"
                     });
                     const chordsData = await data.json();
@@ -74,7 +74,6 @@ function SeeAllPage() {
     }, [type, userType])
 
     async function handleDelete(item) {
-        console.log(item);
         if(type === "createdChords"){
             const response = await fetch(`http://localhost:3001/chords/${item.chordId}`, {
                 method: "DELETE",
@@ -108,6 +107,17 @@ function SeeAllPage() {
         }
     }
 
+    async function handleEdit(item) {
+        if(type === "createdChords"){
+            console.log("editing chord with id:", item.chordId);
+            navigate("/createChord", {state: {chordId: item.chordId}});
+        }else if(type === "createdSongs"){
+            console.log("editing song with id:", item.songID);
+
+            navigate("/createsong", {state: {songID: item.songID}});
+        }
+    }
+
     return(
         <div className="container">
             <div className="columnLayout" style={{position: "relative", width: "90%", backgroundColor: "#ffffff80", borderRadius: "3vw"}}>
@@ -130,11 +140,21 @@ function SeeAllPage() {
                         serverData.map((item, index) => {
                             return(
                                 <div key={index} >
-                                    <button style={{width: "100%", height: "3.5vw", backgroundColor: "rgb(212, 73, 73)", borderRadius: "1vw", marginBottom: "0.5vw"}} onClick={() => {
-                                        handleDelete(item);
-                                    }}>
-                                        <TrashSvg width={"3vw"} height={"3vw"} />
-                                    </button>
+                                    <div className="crudToolContainer">
+                                        <button style={{width: "100%", height: "3.5vw", backgroundColor: "rgb(212, 73, 73)", borderRadius: "1vw"}} onClick={() => {
+                                            handleDelete(item);
+                                        }}>
+                                            <TrashSvg width={"3vw"} height={"3vw"} />
+                                        </button>
+                                        {type !== "requests" && (
+                                        <button style={{width: "100%", height: "3.5vw", backgroundColor: "rgb(72, 61, 218)", borderRadius: "1vw"}} onClick={() => {
+                                            handleEdit(item);
+                                        }}>
+                                            <PencilSvg />
+                                        </button>
+                                        )}
+                                    </div>
+
                                     {type === "createdChords" ?
                                         <div style={{backgroundColor: "white", width: "11.5vw", height: "16.5vw", borderRadius: "1vw"}}>
                                             <ChordDiagram chord={item} fontSize={"1.1vw"}/>

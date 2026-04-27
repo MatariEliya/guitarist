@@ -1,0 +1,12 @@
+.crudToolContainer {
+    display: flex;
+    gap: 0.5vw;
+    width: 100%;
+    height: 3.5vw;
+    margin-bottom: 0.5vw;
+}
+
+.crudToolContainer > * {
+    height: 100%;
+    flex-grow: 1;
+}

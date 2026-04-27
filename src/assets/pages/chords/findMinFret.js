@@ -19,16 +19,8 @@ export function openMute(serverMute) {
     if(serverMute > 63 || serverMute < 0){
         return mute;
     }
-    while(serverMute > 0){
-        if(serverMute % 2 === 1){
-            mute.push(false);
-        }else{
-            mute.push(true);
-        }
-        serverMute = (serverMute - (serverMute % 2)) / 2;
-    }
-    while(mute.length < 6){
-        mute.push(true);
+    for(let i = 0; i < 6; i++){
+        mute.push((serverMute & Math.pow(2, i)) == 0);
     }
     return mute;
 }

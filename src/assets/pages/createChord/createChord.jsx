@@ -1,8 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
 import './createChord.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { GlobalContext } from "../../../globalsIndex";
+
 import {ChordDiagram} from "../chords/chords"
+import { openMute } from "../chords/findMinFret";
+
 import TextField from "../../../components/textField/textField";
 import Checkbox from "../../../components/checkbox/checkbox";
 import Menu from "../../../components/Menu/menu";
@@ -12,6 +15,36 @@ function CreateChord() {
     const navigate = useNavigate();
     const {userType} = useContext(GlobalContext);
     const {openPopup} = usePopup();
+    const location = useLocation();
+
+    const [onEdit, setOnEdit] = useState(false);
+    useEffect(() => {
+        async function loadChord() {
+            const editChordId = location.state.chordId;
+
+            const data = await fetch(`http://localhost:3001/chords/byId/${editChordId}`, {
+                method: "GET"      
+            });
+            if(data.ok){
+                const chordData = await data.json();
+                
+                setChordInfo({
+                    name: chordData.name,
+                    capo: chordData.capo,
+                    fingers: chordData.fingers,
+                    mute: chordData.mute,
+                    difficult: chordData.difficult? 1 : 0
+                });
+            }
+        }
+        if (location.state?.chordId) {
+            setOnEdit(true);
+            loadChord();
+        }
+        else {
+            setOnEdit(false);
+        }
+    }, []);
 
     const [chordInfo, setChordInfo] = useState({
         name: "",
@@ -20,6 +53,7 @@ function CreateChord() {
         mute: 0,
         difficult: 0
     });
+
     const viewChord = {
         name: chordInfo.name? chordInfo.name : "chord name",
         capo: chordInfo.capo,
@@ -75,7 +109,7 @@ function CreateChord() {
                     <span style={{color: "black", fontSize: "1.2vw", width: "7vw"}}>Mute strings:</span>
                     <div className="rowContent left" style={{gap: "1vw"}}>
                         {[1,2,3,4,5,6].map((stringNum, index) => (
-                            <Checkbox key={index} className="muteStringCheckbox" onChange={(e) => {
+                            <Checkbox key={index} className="muteStringCheckbox" checked={(chordInfo.mute & Math.pow(2, stringNum - 1)) !== 0} onChange={(e) => {
                                 setChordInfo(prev => {
                                     
                                     let newMute = prev.mute;
@@ -114,6 +148,12 @@ function CreateChord() {
             barre: finger.barre? Number(finger.barre) : null,
             isExist: finger.isExist? true : false
         }));
+
+        if(!isValidFingers(fingersData)){
+            openPopup({text: "Please enter valid finger positions."});
+            return;
+        }
+
         const serverChordInfo = {
             name: chordInfo.name,
             numCapo: chordInfo.numCapo? Number(chordInfo.numCapo) : 0,
@@ -123,20 +163,38 @@ function CreateChord() {
         }
 
         // כאן צריך לשלוח את הchordInfo לשרת ולשמור אותו במסד הנתונים
-        const response = await fetch("http://localhost:3001/chords", {
-            method: "POST",
-            headers: {
-                Authorization: "Bearer " + sessionStorage.getItem("token"),
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(serverChordInfo)
-        });
-        if (response.ok) {
-            // אם השמירה הצליחה, אפשר לנווט חזרה לדף הקודם או לדף הבית
-            navigate(-1);
-        } else {
-            // אם הייתה שגיאה, אפשר להציג הודעת שגיאה למשתמש
-            openPopup({text: "Failed to save chord. Please try again."});
+        if(onEdit){
+            const response = await fetch(`http://localhost:3001/chords/${location.state.chordId}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem("token"),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(serverChordInfo)
+            });
+            if (response.ok) {
+                // אם העדכון הצליח, אפשר לנווט חזרה לדף הקודם או לדף הבית
+                navigate(-1);
+            } else {
+                // אם הייתה שגיאה, אפשר להציג הודעת שגיאה למשתמש
+                openPopup({text: "Failed to update chord. Please try again."});
+            }
+        }else{
+            const response = await fetch("http://localhost:3001/chords", {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem("token"),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(serverChordInfo)
+            });
+            if (response.ok) {
+                // אם השמירה הצליחה, אפשר לנווט חזרה לדף הקודם או לדף הבית
+                navigate(-1);
+            } else {
+                // אם הייתה שגיאה, אפשר להציג הודעת שגיאה למשתמש
+                openPopup({text: "Failed to save chord. Please try again."});
+            }
         }
     }
 
@@ -188,3 +246,21 @@ function FingerPositions ({fingerNum, fingerInfo, setChordInfo}){
     }
 }
 
+function isValidFingers(fingers) {
+    for (let index = 0; index < fingers.length; index++) {
+        const finger = fingers[index];
+        const { string, fret, barre, isExist } = finger;
+
+        // אם האצבע לא קיימת — מדלגים
+        if (isExist && !(string >= 0 && string <= 6 &&
+            fret >= 0 && fret <= 4 &&
+            barre >= 0 && barre <= 5 &&
+            (barre + string) <= 6))
+        {
+            console.log(`Invalid finger position at index ${index}:`, finger);
+            return false;
+        };
+        console.log(`Finger at index ${index} is valid:`, finger);
+    }
+    return true;
+}

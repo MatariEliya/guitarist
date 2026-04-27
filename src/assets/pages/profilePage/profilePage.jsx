@@ -38,9 +38,6 @@ function ProfilePage() {
   useEffect( () => {
     const fetchData = async () => {
       const token = sessionStorage.getItem("token");
-      const decodedToken = jwtDecode(token);
-
-      const creator_id = decodedToken?.user_id
 
 
       //מוציאים את הנתונים של הפרופיל
@@ -48,14 +45,17 @@ function ProfilePage() {
         const requestResponse = await fetch("http://localhost:3001/creators/requests", {
             method: "GET",
             headers: {
-                Authorization: "Bearer " + sessionStorage.getItem("token")
+                Authorization: "Bearer " + token
             }
         });
         const requestsData = await requestResponse.json();
         if(requestResponse.ok){
             setRequests(requestsData);
         }
-        const response = await fetch(`http://localhost:3001/creators/creatorInfo/${creator_id}`, {
+        const response = await fetch(`http://localhost:3001/creators/creatorInfo`, {
+            headers: {
+                Authorization: "Bearer " + token
+            },
             method: "GET"           
         });
         const data = await response.json()
@@ -104,7 +104,7 @@ function ProfilePage() {
             <>
               {/*profile section */}
               <span style={{fontSize: "2vw", fontWeight: "700", marginBottom: "1vw"}}>Create and edit your creator profile</span>
-              {creatorInfo?.hasCreatorCard ? (
+              {creatorInfo?.creatorId ? (
                 <ProfileCard info={{creatorName: creatorInfo.creatorName, tag1: creatorInfo.tag1, tag2: creatorInfo.tag2, tag3: creatorInfo.tag3}} onClick={() => navigate("/createCreatorProfile")}/>
               ) : (
                 <button className="createProfileCard" onClick={() => navigate("/createCreatorProfile")}>+</button>
