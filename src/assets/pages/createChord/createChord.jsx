@@ -163,43 +163,48 @@ function CreateChord() {
         }
 
         // כאן צריך לשלוח את הchordInfo לשרת ולשמור אותו במסד הנתונים
-        if(onEdit){
-            const response = await fetch(`http://localhost:3001/chords/${location.state.chordId}`, {
-                method: "PUT",
-                headers: {
-                    Authorization: "Bearer " + sessionStorage.getItem("token"),
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(serverChordInfo)
-            });
-            if (response.ok) {
-                // אם העדכון הצליח, אפשר לנווט חזרה לדף הקודם או לדף הבית
-                navigate(-1);
-            } else {
-                // אם הייתה שגיאה, אפשר להציג הודעת שגיאה למשתמש
-                openPopup({text: "Failed to update chord. Please try again."});
+        try{
+            if(onEdit){
+                const response = await fetch(`http://localhost:3001/chords/${location.state.chordId}`, {
+                    method: "PUT",
+                    headers: {
+                        Authorization: "Bearer " + sessionStorage.getItem("token"),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(serverChordInfo)
+                });
+                if (response.ok) {
+                    // אם העדכון הצליח, אפשר לנווט חזרה לדף הקודם או לדף הבית
+                    navigate(-1);
+                } else {
+                    const errorData = await response.json();
+                    // אם הייתה שגיאה, אפשר להציג הודעת שגיאה למשתמש
+                    openPopup({text: "Failed to update chord." + (errorData?.message || "Please try again.")});
+                }
+            }else{
+                const response = await fetch("http://localhost:3001/chords", {
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + sessionStorage.getItem("token"),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(serverChordInfo)
+                });
+                if (response.ok) {
+                    // אם השמירה הצליחה, אפשר לנווט חזרה לדף הקודם או לדף הבית
+                    navigate(-1);
+                } else {
+                    const errorData = await response.json();
+                    // אם הייתה שגיאה, אפשר להציג הודעת שגיאה למשתמש
+                    openPopup({text: (errorData?.message || "Failed to save chord. Please try again.")});
+                }
             }
-        }else{
-            const response = await fetch("http://localhost:3001/chords", {
-                method: "POST",
-                headers: {
-                    Authorization: "Bearer " + sessionStorage.getItem("token"),
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(serverChordInfo)
-            });
-            if (response.ok) {
-                // אם השמירה הצליחה, אפשר לנווט חזרה לדף הקודם או לדף הבית
-                navigate(-1);
-            } else {
-                // אם הייתה שגיאה, אפשר להציג הודעת שגיאה למשתמש
-                openPopup({text: "Failed to save chord. Please try again."});
-            }
+        } catch (error) {
+            openPopup({ text: "Network error. Please try again." });
         }
-    }
-
-
+    } 
 }
+
 export default CreateChord;
 
 
@@ -207,7 +212,7 @@ function FingerPositions ({fingerNum, fingerInfo, setChordInfo}){
     return(
         <div className="rowContent left" style={{paddingLeft: "1vw", gap: "1vw"}}>
             <span style={{color: "black", fontSize: "1.2vw", width: "7vw"}}>Finger {fingerNum}:</span>
-            <Checkbox className="openStringsCheckbox" onChange={(e) => {
+            <Checkbox className="openStringsCheckbox" checked={fingerInfo.isExist} onChange={(e) => {
                 handleFingerChange("isExist", e.target.checked);
             }}/>
             <div className="rowContent left" >

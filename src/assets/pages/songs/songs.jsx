@@ -1,6 +1,6 @@
 import './songs.css';
 
-import React, {useState, useContext, useEffect, useMemo} from "react";
+import React, {useState, useContext, useEffect, useMemo, useRef} from "react";
 import { useNavigate} from "react-router-dom";
 import { GlobalContext } from "../../../globalsIndex";
 import { XSvg } from "../../svg/svg";
@@ -29,6 +29,8 @@ function Songs() {
         }
         return serverSongsF;
     }, [serverSongsF, starredSong]);
+
+    const firstRender = useRef(true);
     useEffect(() => {
         console.log("http://localhost:3001/songs?search=" + normalizeText(searchInput));
         const fetchSongs = async () => {
@@ -41,7 +43,16 @@ function Songs() {
             const data = await response.json();
             setServerSongsF(data);
         };
-        fetchSongs();
+        if(firstRender.current){
+            firstRender.current = false;
+            fetchSongs();
+            return;
+        }
+        const delayDebounceFn = setTimeout(() => {
+            fetchSongs();
+        }, 500); // Adjust the debounce delay as needed
+
+        return () => clearTimeout(delayDebounceFn);
     }, [searchInput]);
 
     return (

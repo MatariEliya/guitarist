@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from './components/header'
 import Footer from './components/footer'
 import Button from '@mui/material/Button';
@@ -47,6 +47,8 @@ function AppShell() {
           setUserType(decoded.creator ? "creator" : "member");
         }else{
           setUserType("guest")
+          setUsername("")
+          sessionStorage.removeItem("token");
         }
       } catch (error) {
         console.error("Invalid token:", error);
@@ -59,20 +61,28 @@ function AppShell() {
 
   
   const mainMenuPages = [
-    { value: '/', label: 'Home', menu: true },
-    { value: '/creators', label: 'Creators', menu: true },
-    { value: '/songs', label: 'Songs', menu: true },
-    { value: '/chords', label: 'Chords', menu: true },
-    { value: '/tuner', label: 'Tuner', menu: true },
+    { value: '/', label: 'Home'},
+    { value: '/creators', label: 'Creators'},
+    { value: '/songs', label: 'Songs'},
+    { value: '/chords', label: 'Chords'},
+    { value: '/tuner', label: 'Tuner'},
   ];
-  const allPages = [
+  const allPagesWithMenu = [
     ...mainMenuPages,
-    { value: '/createChord', menu: false },
+    { value: '/profile'},
   ];
-  let isEmptyPage = !allPages.some(page => (page.value === location.pathname) && page.menu);
-  if(location.pathname.startsWith('/songs/') || location.pathname.startsWith('/creators/')){
-    isEmptyPage = false;
-  }
+
+
+  const [isEmptyPage, setIsEmptyPage] = useState(true);
+  useEffect(() => {
+    const songPage = location.pathname.startsWith('/songs/');
+    const creatorPage = location.pathname.startsWith('/creators/');
+    const empty = ((!allPagesWithMenu.some(page => (page.value === location.pathname))) && !songPage && !creatorPage);
+    if(!songPage){
+      document.title = "Guitarist";
+    }
+    setIsEmptyPage(empty);
+  }, [location.pathname]);
   return (
     <>
       <Background />

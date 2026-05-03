@@ -6,7 +6,7 @@ export const GlobalContext = createContext();
 export function GlobalProvider({ children }) {
     const [userType, setUserType] = useState("guest");
     const [username, setUsername] = useState("")
-    const [popupInfo, setPopupInfo] = useState({header: "this is popup header", text: "this is popup text", isOpen: false})
+    const [popupInfo, setPopupInfo] = useState({header: "this is popup header", text: "this is popup text", object: null, isOpen: false})
 
     return (
         <GlobalContext.Provider value={{

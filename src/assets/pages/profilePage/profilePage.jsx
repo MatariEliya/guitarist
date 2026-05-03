@@ -15,7 +15,7 @@ import { ReturnSvg, SeeAllSvg } from "../../svg/svg";
 function ProfilePage() {
   const navigate = useNavigate();
   const {openPopup} = usePopup();
-  const { userType , setUserType} = useContext(GlobalContext);
+  const { userType , setUserType, username} = useContext(GlobalContext);
 
   const [requests, setRequests] = useState(["Request 1", "Request 2 ugiu hgoihoiho ihp ppo[ po\njh\n \n dfdsd\n\n\n gfghs\nsadffsafasfasfsafsafsafsafsa asfasf sfasaf f sf asf\n s \nfa \ndflg ", "Request 3", "khgku"]); // Placeholder for user's requests
 
@@ -93,6 +93,7 @@ function ProfilePage() {
       ) : (
         // conected user view
         <div className="columnLayout" style={{width: "90%", borderRadius: "2vw", paddingTop: "3vw", backgroundColor: "#ffffff3f", position: "relative"}}>
+          <span style={{fontSize: "3vw", fontWeight: "700"}}>Welcome, {username}!</span>
           <button
             className="backButton"
             style={{top: "1vw", left: "2vw"}}

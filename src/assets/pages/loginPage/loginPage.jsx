@@ -12,7 +12,7 @@ import { usePopup } from "../../../components/Popup/usePopup";
 function LoginPage() {
     const [page, setPage] = useState("login");
     
-    const {setUserType, setUsername} = useContext(GlobalContext);
+    const {setUserType, setUsername, userType} = useContext(GlobalContext);
     const {openPopup} = usePopup();
 
     const [usernameInput, setUsernameInput] = useState("")
@@ -23,7 +23,11 @@ function LoginPage() {
         setPasswordInput("")
         setSecPasswordInput("")
     }, [page])
-    
+    useEffect(() => {
+        if(userType){
+            navigate("/")
+        }
+    }, [userType])
 
     const navigate = useNavigate();
     return (

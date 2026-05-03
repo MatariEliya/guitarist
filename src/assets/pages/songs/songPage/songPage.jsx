@@ -7,7 +7,7 @@ import StarButton from "../../../../components/starButton/starButton";
 import { ChordDiagram } from "../../chords/chords";
 import "./songPage.css";
 
-function CreatorPage (){
+function SongPage (){
     const navigate = useNavigate();
     const {songID} = useParams();
     const {userType} = useContext(GlobalContext);
@@ -35,6 +35,7 @@ function CreatorPage (){
                 return;
             }
             const song = await response.json();
+            document.title = song.songName;
             setSong({songName: song.songName, chords: song.chords, lyrics: song.lyrics, startOnRight: song.startOnRight});
             setStarredSong(song.favorite);
         }
@@ -42,7 +43,7 @@ function CreatorPage (){
     }, [songID]);
 
     async function updateStarredSong({starred}) {
-        const response = await fetch(`http://localhost:3001/songs/${songID}/favorite`, {
+        const response = await fetch(`http://localhost:3001/songs/favorite/${songID}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -94,7 +95,7 @@ function CreatorPage (){
     );
 }
 
-export default CreatorPage;
+export default SongPage;
 
 
 export function SongLyrics({ text, chords, StartOnRight = false}) {
@@ -119,7 +120,7 @@ export function SongLyrics({ text, chords, StartOnRight = false}) {
                 s.sentence == null?
                 <div key={idx} className="rowContent left"/>
                 :<div key={idx} style={{position: "relative", display: "flex", flexDirection: "column", alignItems: s.chord ? "flex-start" : "flex-start"}}>
-                    <span style={{/*position: "absolute", left: !StartOnRight ? "0" : "auto", right: StartOnRight ? "0" : "auto", */display: "inline-block", height: "1vw", fontWeight: "bold", color: "black", fontSize: "1.5vw" , marginBottom: "0.5vw"}}>
+                    <span style={{/*position: "absolute", left: !StartOnRight ? "0" : "auto", right: StartOnRight ? "0" : "auto", */display: "inline-block", height: "1vw", fontWeight: "bold", color: "rgb(59, 0, 107)", fontSize: "1.5vw" , marginBottom: "0.5vw"}}>
                         {s.chord || ""}
                     </span>
                     <span style={{ color: "black", fontSize: "1.2vw", whiteSpace: "pre", margin: "0"}}>{s.sentence}</span>
