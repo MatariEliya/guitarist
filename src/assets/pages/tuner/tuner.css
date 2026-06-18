@@ -5,6 +5,7 @@
     justify-content: center;
     background-color: #1e1e1e00;
     font-family: 'Arial', sans-serif;
+    margin-top: 2vw;
 }
 
 .tunerStart{
@@ -86,4 +87,3 @@
     height: auto;
     pointer-events: none;
 }
-/* Responsive adjustments for smaller screens */

@@ -19,7 +19,7 @@ function SongPage (){
         {name: "C", numCapo: 1 , fingers:[[1, 5, 0, true], [2, 3, 0, true], [3, 2, 0, true], [0, 0, 0, false]] , mute:[1]},
         {name: "G", numCapo: 1, fingers:[[2, 2, 0, true], [3, 1, 0, true], [3, 6, 0, true], [0, 0, 0, false]] , mute:[]},
         {name: "F", numCapo: 1, fingers:[[1, 1, 5, true], [2, 4, 0, true], [3, 2, 0, true], [3, 3, 0, true]] , mute:[]}
-    ], lyrics: "hljkgu{0}gu jkgk{2}hl jgjkgk{1}{-1}j{0}g{-1}{-1}{-1}l{2}p"});
+    ], lyrics: "hljkgu{0}gu jkgk{2}hl jgjkgkj{0}gl{2}p"});
 
 
     useEffect(() => {

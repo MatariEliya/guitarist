@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Header from './components/header'
 import Footer from './components/footer'
-import Button from '@mui/material/Button';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 
@@ -23,7 +22,6 @@ import SeeAllPage from './assets/pages/seeAllPage/seeAllPage';
 
 import MainMenu from './components/Menu/MainMenu/mainMenu';
 import Background from './assets/backeground/background';
-import ProfileMenu from './components/Menu/profileMenu/profileMenu';
 import Popup from './components/Popup/popup';
 import { ProfileSvg } from './assets/svg/svg';
 

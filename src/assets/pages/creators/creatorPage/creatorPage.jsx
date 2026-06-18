@@ -132,7 +132,7 @@ function CreatorPage(){
                 <p style={{fontSize: '1vw', fontWeight: "400", marginTop: '1vw', marginBottom: '3vw', color: "rgb(0, 0, 0)", whiteSpace: 'pre-line'}}>{creatorInfo.bio}</p>
                 <button className="requestButton" onClick={scrollToSection}>Request someting</button>
                 <span style={{fontSize: '2vw', fontWeight: 'bold', color: "rgb(85, 85, 85)"}}>Creator's Songs</span>
-                <div className="groupContent" style={{backgroundColor: "rgba(255, 255, 255, 0.5)", gap: "2vw", padding: "3vw", borderRadius: "2vw", marginTop: "1vw"}}>
+                <div className="groupContent" style={{backgroundColor: "rgba(255, 255, 255, 0.5)", gap: "1vw", padding: "2vw", borderRadius: "2vw", marginTop: "1vw"}}>
                     {creatorInfo.songs ? creatorInfo.songs.map((song) =>
                         <SongCard key={song.songID} image={`http://localhost:3001/images/${song.songID}_song.webp`} songName={song.songName} artist={song.artist} onClick={() => {navigate(`/songs/${song.songID}`)}}/>
                     )

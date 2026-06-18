@@ -32,7 +32,6 @@ function Songs() {
 
     const firstRender = useRef(true);
     useEffect(() => {
-        console.log("http://localhost:3001/songs?search=" + normalizeText(searchInput));
         const fetchSongs = async () => {
             const response = await fetch("http://localhost:3001/songs?search=" + normalizeText(searchInput), {
                 method: "GET",

@@ -24,7 +24,6 @@ function SeeAllPage() {
 
     const [serverData, setServerData] = useState([]);
 
-    console.log(serverData);
 
     useEffect(() => {
         async function fetchData() {
@@ -112,7 +111,6 @@ function SeeAllPage() {
             console.log("editing chord with id:", item.chordId);
             navigate("/createChord", {state: {chordId: item.chordId}});
         }else if(type === "createdSongs"){
-            console.log("editing song with id:", item.songID);
 
             navigate("/createsong", {state: {songID: item.songID}});
         }

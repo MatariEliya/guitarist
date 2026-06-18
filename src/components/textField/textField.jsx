@@ -3,7 +3,7 @@ import { useState } from "react";
 import './textField.css';
 import { PasswordEyeSvg } from "../../assets/svg/svg";
 
-function TextField({type, text, value, Icon, className, maxLength, onChange, onEnter, noSpace}) {
+function TextField({type, text, value, className, maxLength, onChange, onEnter, noSpace}) {
     const [showPassword, setShowPassword] = useState(false);
     const effectiveType = showPassword ? "text" : type == "number" ? "text" : type;
 

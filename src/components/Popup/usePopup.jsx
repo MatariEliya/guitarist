@@ -4,8 +4,8 @@ import { GlobalContext } from "../../globalsIndex";
 export function usePopup() {
     const { setPopupInfo } = useContext(GlobalContext);
 
-    const openPopup = useCallback(({ header, text, object, isOpen = true }) => {
-        setPopupInfo({ header, text, object, isOpen });
+    const openPopup = useCallback(({ header, text, object}) => {
+        setPopupInfo({ header, text, object, isOpen: true });
     }, [setPopupInfo]);
 
     const closePopup = useCallback(() => {

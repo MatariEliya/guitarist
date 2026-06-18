@@ -53,7 +53,7 @@ function Creators (){
 
   return (
     <div className="container">
-      <div className='columnLayout' style={{width: "90%", backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: "2vw"}}>
+      <div className='columnLayout' style={{width: "90%", backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: "2vw", margin: "1vw", padding: "2vw"}}>
         {userType === "creator"? <div className='rowContent' style={{margin: "2vw"}}>
           {profileCard?
           <ProfileCard info={profileCard} onClick={() => navigate("/createCreatorProfile")}/>

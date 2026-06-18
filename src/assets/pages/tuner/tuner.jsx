@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef} from 'react';
 import './tuner.css';
-import guitar from './guitar head.png';
+import guitar from '../../images/guitarHead.png';
 import autoCorrelate from './AutoCorrelation.jsx';
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -33,7 +33,7 @@ function Tuner() {
 
 
     const updatePitch = () => {
-        console.log('updatePitch called');
+        console.log('notes', notes);
         analyserNode.getFloatTimeDomainData(buf);
         var ac = autoCorrelate(buf, audioCtx.sampleRate);
         centsRef.current = null;
@@ -41,11 +41,9 @@ function Tuner() {
             pitchRef.current = parseFloat(ac).toFixed(2);
             pitchScaleRef.current = Math.floor(noteFromPitch(ac) / 12) - 1;
             centsRef.current = getTuningAccuracy(ac, tune[activeIndexRef.current].frequency).toFixed(2);
-            console.log(activeIndexRef.current);
             setPitch(pitchRef.current);
             setPitchScale(pitchScaleRef.current);
             setCents(centsRef.current);
-            console.log('cents', centsRef.current,'pitch', pitchRef.current,'pitchScale', pitchScaleRef.current);
         }
         setNotes(prev => [centsRef.current, ...prev.slice(0, 50)]); // שמור עד 50 אחרונים
     };

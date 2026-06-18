@@ -24,7 +24,8 @@ function LoginPage() {
         setSecPasswordInput("")
     }, [page])
     useEffect(() => {
-        if(userType){
+        console.log(userType)
+        if(userType != "guest"){
             navigate("/")
         }
     }, [userType])
